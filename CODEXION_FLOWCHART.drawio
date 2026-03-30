@@ -1,0 +1,110 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="CZKsy8BmWoNzyKlPpEac">
+    <mxGraphModel dx="1717" dy="1706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-31" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="PARSEO" vertex="1">
+          <mxGeometry height="100" width="100" x="-280" y="-610" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-2" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;fontColor=#3333FF;" value="- JOIN PARA UNIFICAR ARGUMENTOS DE ENTRADA&lt;div&gt;- SPLIT PARA SEPARARLOS&lt;/div&gt;&lt;div&gt;- 8 ARGUMENTOS NECESARIOS&lt;/div&gt;&lt;div&gt;- TODOS LOS ARGUMENTOS DEBEN SER NUMERICOS&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;EXCEPTO EL ULTIMO&lt;br&gt;&lt;/div&gt;&lt;div&gt;- TODOS LOS ARGUMENTOS NUMERICOS HAN DE&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;SER POSITIVOS&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="60" x="-260" y="-850" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-5" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;" value="ESTRUCTURA PARA CODERS (nodos)&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- id (int)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- start_comp&amp;nbsp;&lt;span style=&quot;background-color: transparent;&quot;&gt;(float?)&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- start_deb&amp;nbsp;&lt;span style=&quot;background-color: transparent;&quot;&gt;(float?)&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- start_ref (float?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- num_comp (int)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- num_dongles (int)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- burned (bool)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp;- p_params(* p_params)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="70" x="310" y="-365" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="INICIO PROCESO" vertex="1">
+          <mxGeometry height="100" width="100" x="-60" y="-610" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-14" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="-560" />
+              <mxPoint x="850" y="-400" />
+            </Array>
+            <mxPoint x="850" y="-380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-29" connectable="0" parent="8yw79JX1tNWvb1Li-H9v-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="EDF&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.4767" y="3" as="geometry">
+            <mxPoint x="-299" y="3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-27" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="-350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-28" connectable="0" parent="8yw79JX1tNWvb1Li-H9v-27" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="FIFO" vertex="1">
+          <mxGeometry relative="1" x="0.2771" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-10" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" value="LÓGICA?" vertex="1">
+          <mxGeometry height="100" width="100" x="120" y="-610" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-17" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-16" parent="1" style="html=1;strokeWidth=2;shape=manualInput;whiteSpace=wrap;rounded=1;size=26;arcSize=11;" value="INICIO (terminal)" vertex="1">
+          <mxGeometry height="60" width="100" x="-480" y="-590" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-18" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;" value="P_PARAMS&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- num_coders (int)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- t_t_burn(long?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- t_t_comp(long?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- t_t_debug(long?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- t_t_ref(long?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- num_comp(int)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- dong_timeout(long?)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 51, 255);&quot;&gt;- scheduler(*str)&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="60" x="180" y="-870" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-19" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="8yw79JX1tNWvb1Li-H9v-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-23" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="8yw79JX1tNWvb1Li-H9v-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-200" y="-660" />
+              <mxPoint x="180" y="-660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-26" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="8yw79JX1tNWvb1Li-H9v-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-39" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-35" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="Start Coding&lt;div&gt;&lt;font style=&quot;color: rgb(255, 0, 0);&quot;&gt;MUTEX A DONGLES&lt;/font&gt;&lt;br&gt;Esperar tiempo definido&lt;br&gt;&lt;font style=&quot;color: rgb(255, 51, 51);&quot;&gt;UNMUTEX DONGLES&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(255, 51, 51);&quot;&gt;Aviso recurso disponible&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-44" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-35">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="60" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-41" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-37" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="Start debuging&lt;br&gt;&lt;br&gt;Esperar tiempo definido" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="Start refactor&lt;br&gt;&lt;br&gt;Esperar tiempo definido" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-49" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8yw79JX1tNWvb1Li-H9v-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-45" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="CREAR ESTRUCTURA CON DATOS PRA HILOS" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="-330" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-46" edge="1" parent="1" source="8yw79JX1tNWvb1Li-H9v-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="8yw79JX1tNWvb1Li-H9v-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="CREAR HILOS" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="-170" as="geometry" />
+        </mxCell>
+        <mxCell id="8yw79JX1tNWvb1Li-H9v-48" parent="1" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" value="CREAR HILO WATCHER" vertex="1">
+          <mxGeometry height="100" width="220" x="-210" y="-170" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
