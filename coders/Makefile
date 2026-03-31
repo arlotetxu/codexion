@@ -6,7 +6,7 @@
 #    By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 11:11:03 by joflorid          #+#    #+#              #
-#    Updated: 2026/03/30 10:58:39 by joflorid         ###   ########.fr        #
+#    Updated: 2026/03/31 12:52:53 by joflorid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,21 +48,18 @@ CFLAGS = -Wall -Wextra -Werror
 #NAME = $(SRC_DIR)/push_swap
 NAME = codexion
 
-SRC_DIR = ./src
+SRC_DIR = .
 
-SRC = ps_algorithm_3_2.c ps_index_target_a.c ps_initial_checks.c \
-	ps_last_sort.c ps_load_stack_a.c ps_mov_a2b2a.c ps_moves_1.c ps_moves_2.c \
-	ps_moves_a.c ps_moves_b.c ps_target_b.c ps_utils_1.c ps_utils_2.c \
-	push_swap.c
+SRC = codexion.c parser.c aux.c
 
 
-OBJ_DIR = ./src/obj
+OBJ_DIR = ./obj
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 #OBJS_BONUS = $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.o))
 
-H_FILES = ./inc/codexion.h
+H_FILES = ./codexion.h
 
 #=========================TARGETS========================
 all: $(NAME)
