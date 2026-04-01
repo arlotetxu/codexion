@@ -6,30 +6,69 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/03/31 12:51:25 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:07:52 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"codexion.h"
 #include<stdio.h>
 #include<stdlib.h>
+#include<limits.h>
 
+
+/*
+PARSEO:
+- Numero de argumentos correctos [X] - 1
+- Todos los argumentos excepto ultimo son numeros [X] - 2
+- Todos los argumentos excepto ultimo son positivos [X] - 2
+- Todos los argumentos numericos no exceden un long [X] - 3
+- Ultimo argumento solo puede ser fifo / edf (convertir minus) []
+-
+
+
+ERRORES
+1 - Numero incorrecto de argumentos
+2 - Primeros 7 argumentos no son numericos
+3 - Algun argumento excede los limites de long
+
+*/
+
+int	ft_start_parsing(char *arg_join, char **all_args)
+{
+	int		ret;
+
+	ret = ft_check_args_nums(all_args);
+	if (ret)
+		return (ft_print_error(2), 2);
+	ret = ft_check_arg_long(all_args);
+	if (ret)
+		return (ft_print_error(3), 3);
+	ret = ft_check_last_arg(all_args);
+	
+	ft_double_free(arg_join, all_args);
+	return (0);
+}
 
 int main(int argc, char **argv)
 {
 	char	*arg_join;
 	char	**all_args;
-	int		i;
+	int		ret;
 
 	arg_join = ft_arg_join(argc, argv);
 	all_args = ft_arg_split(arg_join, 32);
-
-	i = -1;
-	while (all_args[++i])
-		printf("Cadena[%d]: %s\n", i, all_args[i]);
-
-	free(arg_join);
-	ft_double_free(all_args);
-
+	ret = ft_num_args(all_args);
+	if (ret != 8)
+	{
+		ft_double_free(arg_join, all_args);
+		return (ft_print_error(1), 1);
+	}
+	ret = ft_start_parsing(arg_join, all_args);
+	if (ret)
+	{
+		ft_double_free(arg_join, all_args);
+		return (ret);
+	}
+	printf("Todo OK hasta el momento!!\n");
 	return (0);
 }

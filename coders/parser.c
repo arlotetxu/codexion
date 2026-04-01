@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 16:00:50 by joflorid          #+#    #+#             */
-/*   Updated: 2026/03/31 12:52:24 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/01 17:03:12 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_arg_join(int argc, char **argv)
 
 	k = 0;
 	i = 0;
-	all_argv = malloc((sizeof(char) * ft_args_len(argc, argv)) + 1); //! malloc
+	all_argv = malloc(sizeof(char) * (ft_args_len(argc, argv) + 1)); //! malloc
 	if (!all_argv)
 		return (NULL);
 	while(argv[++i])
@@ -68,7 +68,7 @@ char	*ft_get_word(char **str, char s)
 		len++;
 	if (len == 0)
 		return (NULL);
-	word = malloc((sizeof(char) * len) + 1); //! TODO malloc
+	word = malloc(sizeof(char) * (len + 1)); //! TODO malloc OK
 	if (!word)
 		return (NULL);
 	i = -1;
@@ -89,18 +89,19 @@ char	**ft_arg_split(char *argv, char sep)
 	int		i;
 
 	words = ft_count_words(argv, sep);
-	ret = malloc((sizeof(char *) * words) + 1); //! TODO malloc
+	ret = malloc(sizeof(char *) * (words + 1)); //! TODO malloc OK
 	if (!ret)
 		return (NULL);
-	i = -1;
-	while (++i < words)
+	i = 0;
+	while (i < words)
 	{
 		ret[i] = ft_get_word(&argv, sep);
 		if (!ret[i])
 		{
-			ft_double_free(ret);
+			ft_double_free(NULL, ret);
 			return (NULL);
 		}
+		i++;
 	}
 	ret[i] = NULL;
 	return (ret);
