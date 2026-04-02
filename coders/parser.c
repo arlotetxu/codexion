@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 16:00:50 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/01 17:03:12 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:23:22 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int	ft_args_len(int argc, char **argv)
 {
@@ -33,9 +33,9 @@ int	ft_args_len(int argc, char **argv)
 
 char	*ft_arg_join(int argc, char **argv)
 {
-	int	i;
-	int	j;
-	int	k;
+	int		i;
+	int		j;
+	int		k;
 	char	*all_argv;
 
 	k = 0;
@@ -43,10 +43,10 @@ char	*ft_arg_join(int argc, char **argv)
 	all_argv = malloc(sizeof(char) * (ft_args_len(argc, argv) + 1)); //! malloc
 	if (!all_argv)
 		return (NULL);
-	while(argv[++i])
+	while (argv[++i])
 	{
 		j = -1;
-		while(argv[i][++j])
+		while (argv[i][++j])
 			all_argv[k++] = argv[i][j];
 		if (i < argc - 1)
 			all_argv[k++] = ' ';
@@ -80,7 +80,6 @@ char	*ft_get_word(char **str, char s)
 	word[i] = '\0';
 	return (word);
 }
-
 
 char	**ft_arg_split(char *argv, char sep)
 {

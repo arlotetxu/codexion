@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/01 17:07:52 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:21:28 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"codexion.h"
-#include<stdio.h>
-#include<stdlib.h>
-#include<limits.h>
-
+#include "codexion.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
 /*
 PARSEO:
@@ -22,34 +21,38 @@ PARSEO:
 - Todos los argumentos excepto ultimo son numeros [X] - 2
 - Todos los argumentos excepto ultimo son positivos [X] - 2
 - Todos los argumentos numericos no exceden un long [X] - 3
-- Ultimo argumento solo puede ser fifo / edf (convertir minus) []
--
+- Ultimo argumento solo puede ser fifo / edf (convertir minus) [X] - 4
+- Añadir parametros de entrada a la estructura general t_params
 
 
-ERRORES
+CODIGO ERRORES
 1 - Numero incorrecto de argumentos
 2 - Primeros 7 argumentos no son numericos
 3 - Algun argumento excede los limites de long
+4 - La logica elegida no es ni fifo ni edf
 
 */
 
-int	ft_start_parsing(char *arg_join, char **all_args)
+int	ft_start_parsing(char **all_args)
 {
 	int		ret;
 
 	ret = ft_check_args_nums(all_args);
 	if (ret)
 		return (ft_print_error(2), 2);
-	ret = ft_check_arg_long(all_args);
+	ret = ft_check_arg_int(all_args);
 	if (ret)
 		return (ft_print_error(3), 3);
 	ret = ft_check_last_arg(all_args);
-	
-	ft_double_free(arg_join, all_args);
+	if (ret)
+		return (ft_print_error(4), 4);
+	ret = ft_loading_params(all_args);
+	if (ret)
+		return (ft_print_error(5), 5);
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	char	*arg_join;
 	char	**all_args;
@@ -57,13 +60,12 @@ int main(int argc, char **argv)
 
 	arg_join = ft_arg_join(argc, argv);
 	all_args = ft_arg_split(arg_join, 32);
-	ret = ft_num_args(all_args);
-	if (ret != 8)
+	if (ft_num_args(all_args) != 8)
 	{
 		ft_double_free(arg_join, all_args);
 		return (ft_print_error(1), 1);
 	}
-	ret = ft_start_parsing(arg_join, all_args);
+	ret = ft_start_parsing(all_args);
 	if (ret)
 	{
 		ft_double_free(arg_join, all_args);

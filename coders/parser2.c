@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:05:36 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/01 17:20:53 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:19:36 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"codexion.h"
-#include<limits.h>
-#include<stdio.h>
+#include "codexion.h"
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int	ft_num_args(char **all_args)
 {
@@ -29,9 +30,6 @@ int	ft_check_args_nums(char **args)
 	int	i;
 	int	len;
 
-	// len = 0;
-	// while (args[len])
-	// 	len++;
 	len = ft_count_args(args);
 	i = -1;
 	while (++i < len - 1)
@@ -40,20 +38,17 @@ int	ft_check_args_nums(char **args)
 	return (0);
 }
 
-int	ft_check_arg_long(char **args)
+int	ft_check_arg_int(char **args)
 {
 	int		i;
 	int		len;
-	long long	nb;
+	long	nb;
 
-	// len = 0;
-	// while (args[len])
-	// 	len++;
 	len = ft_count_args(args);
 	i = -1;
 	while (++i < len -1)
 	{
-		nb = ft_atol(args[i]);
+		nb = ft_atoi(args[i]);
 		if (nb == -1)
 			return (3);
 	}
@@ -64,10 +59,38 @@ int	ft_check_last_arg(char **args)
 {
 	int		last_index;
 	char	*last_arg;
+	int		is_fifo;
+	int		is_edx;
 
 	last_index = ft_count_args(args);
 	last_index = last_index - 1;
 	last_arg = ft_to_lower(args[last_index]);
-	// printf("Last arg: %s\n", last_arg);
+	is_fifo = ft_strcmp(last_arg, "fifo");
+	is_edx = ft_strcmp(last_arg, "edf");
+	if (!is_fifo && !is_edx)
+	{
+		free(last_arg);
+		return (4);
+	}
+	free(last_arg);
+	return (0);
+}
+
+int	ft_loading_params(char **all_args)
+{
+	t_params	*p_params;
+
+	p_params = malloc(sizeof(t_params)); //!malloc sin liberar
+	if (!p_params)
+		return (-1);
+	p_params->num_coders = ft_atoi(all_args[0]);
+	p_params->tt_burn = ft_atoi(all_args[1]);
+	p_params->tt_comp = ft_atoi(all_args[2]);
+	p_params->tt_deb = ft_atoi(all_args[3]);
+	p_params->tt_ref = ft_atoi(all_args[4]);
+	p_params->num_comp_req = ft_atoi(all_args[5]);
+	p_params->tt_cooldown = ft_atoi(all_args[6]);
+	p_params->scheduler = ft_to_lower(all_args[7]); //!malloc sin liberar
+	ft_double_free(NULL, all_args);
 	return (0);
 }
