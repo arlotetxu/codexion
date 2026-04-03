@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:43:47 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/03 17:43:23 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ typedef struct s_coder
 
 typedef struct s_priority_q
 {
-	t_coder	*heap;
-	int		size;
+	t_coder			*heap;
+	int				size;
 	pthread_mutex_t	gen;
 }	t_priority_q;
 
 //=============PROTOTYPES//=============
 //main
-int		ft_start_parsing(char **all_args);
+int		ft_start_program(char **all_args, t_params *p_param);
+int		ft_start_parsing(char **all_args, t_params *p_param);
 
 //parser.c
 int		ft_args_len(int argc, char **argv);
@@ -64,12 +65,13 @@ int		ft_num_args(char **all_args);
 int		ft_check_args_nums(char **args);
 int		ft_check_arg_int(char **args);
 int		ft_check_last_arg(char **args);
-int		ft_loading_params(char **all_args);
+int		ft_loading_params(char **all_args, t_params *p_params);
 
 //aux.c
 int		ft_strlen(char *str);
 int		ft_count_words(char *str, char sep);
-void	ft_double_free(char *str, char **str2);
+// void	ft_double_free(char *str, char **str2);
+void	ft_double_free(void *str, char **str2);
 int		ft_not_all_digits(char *str);
 // long	ft_atol(char *s);
 int		ft_atoi(char *s);

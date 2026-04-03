@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:07:40 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:17:45 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/03 11:15:27 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ int	ft_print_error(int err_nb)
 		printf("[ERROR]-First 7 arguments must be numeric and positives "
 			"numbers (without signs).\n");
 	else if (err_nb == 3)
-		printf("[ERROR]-Arguments must be within long limits "
-			"(max: 9223372036854775807).\n");
+		printf("[ERROR]-Arguments must be within int limits.\n");
 	else if (err_nb == 4)
 		printf("[ERROR]-Last argument not valid (valid options: fifo/edf).\n");
+	else if (err_nb == 5)
+		printf("[ERROR]-Input parameters couldn't be saved.\n");
 	return (err_nb);
 }

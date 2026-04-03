@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:21:28 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/03 17:43:08 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ CODIGO ERRORES
 2 - Primeros 7 argumentos no son numericos
 3 - Algun argumento excede los limites de long
 4 - La logica elegida no es ni fifo ni edf
+5 - No se han podido guardar los parametros de entrada (memory allocation)
 
 */
 
-int	ft_start_parsing(char **all_args)
+int	ft_start_parsing(char **all_args, t_params *p_param)
 {
 	int		ret;
 
@@ -46,31 +47,43 @@ int	ft_start_parsing(char **all_args)
 	ret = ft_check_last_arg(all_args);
 	if (ret)
 		return (ft_print_error(4), 4);
-	ret = ft_loading_params(all_args);
+	ft_loading_params(all_args, p_param);
+	return (0);
+}
+
+int	ft_start_program(char **all_args, t_params *p_param)
+{
+	int	ret;
+
+	ret = 0;
+	if (ft_num_args(all_args) != 8)
+		return (ft_print_error(1), 1);
+	ret = ft_start_parsing(all_args, p_param);
 	if (ret)
-		return (ft_print_error(5), 5);
+		return (ret);
+	// printf("Check %d\n", p_param->num_comp_req);
+	//start routine
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	char	*arg_join;
-	char	**all_args;
-	int		ret;
+	char		*arg_join;
+	char		**all_args;
+	int			ret;
+	t_params	*p_param;
 
 	arg_join = ft_arg_join(argc, argv);
 	all_args = ft_arg_split(arg_join, 32);
-	if (ft_num_args(all_args) != 8)
-	{
-		ft_double_free(arg_join, all_args);
-		return (ft_print_error(1), 1);
-	}
-	ret = ft_start_parsing(all_args);
+	free(arg_join);
+	p_param = malloc(sizeof(t_params)); //!malloc OK
+	if (!p_param)
+		return (ft_print_error(5), 5);
+	ret = ft_start_program(all_args, p_param);
 	if (ret)
-	{
-		ft_double_free(arg_join, all_args);
-		return (ret);
-	}
+		return (ft_double_free(p_param, all_args), ret);
+	// printf("Check %d\n", p_param->num_comp_req);
 	printf("Todo OK hasta el momento!!\n");
+	free(p_param);
 	return (0);
 }

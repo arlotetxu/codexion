@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+         #
+#    By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 11:11:03 by joflorid          #+#    #+#              #
-#    Updated: 2026/04/01 13:07:24 by joflorid         ###   ########.fr        #
+#    Updated: 2026/04/03 11:41:47 by joflorid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ AFLAGS = rcs
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 #=======================FILES======================
 #NAME = $(SRC_DIR)/push_swap

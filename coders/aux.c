@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:16:09 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:20:04 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/03 10:24:33 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_count_words(char *str, char sep)
 	return (count);
 }
 
-void	ft_double_free(char *str, char **str2)
+void	ft_double_free(void *str, char **str2)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:05:36 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:19:36 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/03 17:42:48 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,12 @@ int	ft_check_last_arg(char **args)
 	return (0);
 }
 
-int	ft_loading_params(char **all_args)
+int	ft_loading_params(char **all_args, t_params *p_params)
 {
-	t_params	*p_params;
-
-	p_params = malloc(sizeof(t_params)); //!malloc sin liberar
-	if (!p_params)
-		return (-1);
+	// t_params	*p_params;
+	// p_params = malloc(sizeof(t_params)); //!malloc OK
+	// if (!p_params)
+	// 	return (-1);
 	p_params->num_coders = ft_atoi(all_args[0]);
 	p_params->tt_burn = ft_atoi(all_args[1]);
 	p_params->tt_comp = ft_atoi(all_args[2]);
