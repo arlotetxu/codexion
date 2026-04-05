@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/03 17:43:08 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/04 08:15:16 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	main(int argc, char **argv)
 		return (ft_double_free(p_param, all_args), ret);
 	// printf("Check %d\n", p_param->num_comp_req);
 	printf("Todo OK hasta el momento!!\n");
+	free(p_param->scheduler);
 	free(p_param);
 	return (0);
 }
