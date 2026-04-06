@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 16:00:50 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/02 19:23:22 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:46:25 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,14 @@ char	**ft_arg_split(char *argv, char sep)
 	}
 	ret[i] = NULL;
 	return (ret);
+}
+
+int	ft_num_args(char **all_args)
+{
+	int	num_args;
+
+	num_args = 0;
+	while (all_args[num_args])
+		num_args++;
+	return (num_args);
 }

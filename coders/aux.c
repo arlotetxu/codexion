@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:16:09 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/03 10:24:33 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/06 10:18:40 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ int	ft_not_all_digits(char *str)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
 		if ((str[i] >= 48 && str[i] <= 57) || str[i] == '+')
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:05:36 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/03 17:42:48 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:49:17 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	ft_num_args(char **all_args)
-{
-	int	num_args;
 
-	num_args = 0;
-	while (all_args[num_args])
-		num_args++;
-	return (num_args);
-}
 
 int	ft_check_args_nums(char **args)
 {
@@ -78,10 +70,8 @@ int	ft_check_last_arg(char **args)
 
 int	ft_loading_params(char **all_args, t_params *p_params)
 {
-	// t_params	*p_params;
-	// p_params = malloc(sizeof(t_params)); //!malloc OK
-	// if (!p_params)
-	// 	return (-1);
+	char	*scheduler;
+
 	p_params->num_coders = ft_atoi(all_args[0]);
 	p_params->tt_burn = ft_atoi(all_args[1]);
 	p_params->tt_comp = ft_atoi(all_args[2]);
@@ -89,7 +79,28 @@ int	ft_loading_params(char **all_args, t_params *p_params)
 	p_params->tt_ref = ft_atoi(all_args[4]);
 	p_params->num_comp_req = ft_atoi(all_args[5]);
 	p_params->tt_cooldown = ft_atoi(all_args[6]);
-	p_params->scheduler = ft_to_lower(all_args[7]); //!malloc sin liberar
-	ft_double_free(NULL, all_args);
+	scheduler = ft_to_lower(all_args[7]);
+	if (ft_strcmp(scheduler, "edf"))
+		p_params->is_edf = 1;
+	else if (ft_strcmp(scheduler, "fifo"))
+		p_params->is_edf = 0;
+	ft_double_free(scheduler, all_args);
+	return (0);
+}
+
+int	ft_start_parsing(char **all_args, t_params *p_param)
+{
+	int		ret;
+
+	ret = ft_check_args_nums(all_args);
+	if (ret)
+		return (ft_print_error(2), 2);
+	ret = ft_check_arg_int(all_args);
+	if (ret)
+		return (ft_print_error(3), 3);
+	ret = ft_check_last_arg(all_args);
+	if (ret)
+		return (ft_print_error(4), 4);
+	ft_loading_params(all_args, p_param);
 	return (0);
 }

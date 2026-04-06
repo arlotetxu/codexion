@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/03 17:43:23 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:05:02 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <pthread.h>
 
 //=============DEFINITIONS=============
+typedef struct s_coder t_coder;
+typedef struct s_dongle t_dongle;
+
 typedef struct s_params
 {
 	int				num_coders;
@@ -25,8 +28,25 @@ typedef struct s_params
 	int				tt_ref;
 	int				num_comp_req;
 	int				tt_cooldown;
-	char			*scheduler;
+	int				is_edf;
 }	t_params;
+
+typedef struct s_priority_q
+{
+	t_coder		*heap;
+	int			size;
+	int			capacity;
+	int			is_edf;
+}	t_priority_q;
+
+typedef struct s_dongle
+{
+	pthread_mutex_t		m_dongle;
+	long				end_cool;
+	int					status;
+	pthread_cond_t		cond;
+	t_priority_q		*pq;
+}	t_dongle;
 
 typedef struct s_coder
 {
@@ -36,18 +56,20 @@ typedef struct s_coder
 	int				st_ref;
 	int				num_comp;
 	int				is_burned;
-	int				dongle;
-	pthread_mutex_t	mine;
-	pthread_mutex_t	right;
-	t_params		*p_params;
+	t_dongle		*left;
+	t_dongle		*right;
 }	t_coder;
 
-typedef struct s_priority_q
+typedef struct s_gen
 {
-	t_coder			*heap;
-	int				size;
-	pthread_mutex_t	gen;
-}	t_priority_q;
+	t_params		*p;
+	t_coder			*c;
+	t_dongle		*d;
+	pthread_mutex_t	m_print;
+	pthread_mutex_t	end_sim;
+	int				stop_sim;
+}	t_gen;
+
 
 //=============PROTOTYPES//=============
 //main
@@ -59,13 +81,15 @@ int		ft_args_len(int argc, char **argv);
 char	*ft_arg_join(int argc, char **argv);
 char	*ft_get_word(char **str, char s);
 char	**ft_arg_split(char *argv, char sep);
+int		ft_num_args(char **all_args);
 
 //parser2.c
-int		ft_num_args(char **all_args);
+
 int		ft_check_args_nums(char **args);
 int		ft_check_arg_int(char **args);
 int		ft_check_last_arg(char **args);
 int		ft_loading_params(char **all_args, t_params *p_params);
+int		ft_start_parsing(char **all_args, t_params *p_param);
 
 //aux.c
 int		ft_strlen(char *str);
@@ -83,5 +107,12 @@ int		ft_strcmp(char *s1, char *s2);
 
 //print_error.c
 int		ft_print_error(int err_nb);
+
+//init_data.c
+t_dongle	*ft_init_dongles(t_params *p_param);
+t_coder		*ft_init_coders(t_params *p_params, t_dongle *my_dongles);
+t_gen		*ft_init_gen(t_params *p, t_coder *c, t_dongle *d);
+t_gen		*ft_start_init_data(t_params *p);
+
 
 #endif
