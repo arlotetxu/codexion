@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/06 17:05:02 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/08 10:19:41 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		ft_atoi(char *s);
 int		ft_count_args(char **args);
 char	*ft_to_lower(char *s);
 int		ft_strcmp(char *s1, char *s2);
+void	ft_free_gen_struct(t_gen *gen);
 
 //print_error.c
 int		ft_print_error(int err_nb);

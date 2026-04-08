@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 12:37:41 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/06 17:04:51 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/08 10:10:11 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 	struct	timeval tv;
 
 	gettimeofday(&tv, NULL);
-	c = malloc(sizeof(t_coder) * p->num_coders); //!malloc sin liberar
+	c = malloc(sizeof(t_coder) * p->num_coders ); //!malloc sin liberar
 	if (!p || !c)
 		return (NULL); //!Liberar?
 	i = 0;

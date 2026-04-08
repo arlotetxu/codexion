@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 12:08:30 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/06 10:31:26 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/08 10:25:19 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,20 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	}
 	return (1);
+}
+
+void	ft_free_gen_struct(t_gen *gen)
+{
+	int	i;
+
+	i = 0;
+	while (i < gen->p->num_coders)
+	{
+		free(gen->d[i].pq->heap);
+		free(gen->d[i].pq);
+		i++;
+	}
+	free(gen->d);
+	free(gen->c);
+	free(gen);
 }
