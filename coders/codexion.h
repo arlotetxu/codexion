@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/08 10:19:41 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/09 17:29:15 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ typedef struct s_params
 
 typedef struct s_priority_q
 {
-	t_coder		*heap;
-	int			size;
-	int			capacity;
-	int			is_edf;
+	t_coder			*heap;
+	pthread_mutex_t	m_pq;
+	int				size;
+	int				capacity;
+	int				is_edf;
 }	t_priority_q;
 
 typedef struct s_dongle
@@ -54,6 +55,7 @@ typedef struct s_coder
 	int				st_comp;
 	int				st_deb;
 	int				st_ref;
+	long			prior; // EDF: st_comp + tt_burn
 	int				num_comp;
 	int				is_burned;
 	t_dongle		*left;
@@ -73,41 +75,41 @@ typedef struct s_gen
 
 //=============PROTOTYPES//=============
 //main
-int		ft_start_program(char **all_args, t_params *p_param);
-int		ft_start_parsing(char **all_args, t_params *p_param);
+int			ft_start_program(char **all_args, t_params *p_param);
+int			ft_start_parsing(char **all_args, t_params *p_param);
 
 //parser.c
-int		ft_args_len(int argc, char **argv);
-char	*ft_arg_join(int argc, char **argv);
-char	*ft_get_word(char **str, char s);
-char	**ft_arg_split(char *argv, char sep);
-int		ft_num_args(char **all_args);
+int			ft_args_len(int argc, char **argv);
+char		*ft_arg_join(int argc, char **argv);
+char		*ft_get_word(char **str, char s);
+char		**ft_arg_split(char *argv, char sep);
+int			ft_num_args(char **all_args);
 
 //parser2.c
 
-int		ft_check_args_nums(char **args);
-int		ft_check_arg_int(char **args);
-int		ft_check_last_arg(char **args);
-int		ft_loading_params(char **all_args, t_params *p_params);
-int		ft_start_parsing(char **all_args, t_params *p_param);
+int			ft_check_args_nums(char **args);
+int			ft_check_arg_int(char **args);
+int			ft_check_last_arg(char **args);
+int			ft_loading_params(char **all_args, t_params *p_params);
+int			ft_start_parsing(char **all_args, t_params *p_param);
 
 //aux.c
-int		ft_strlen(char *str);
-int		ft_count_words(char *str, char sep);
+int			ft_strlen(char *str);
+int			ft_count_words(char *str, char sep);
 // void	ft_double_free(char *str, char **str2);
-void	ft_double_free(void *str, char **str2);
-int		ft_not_all_digits(char *str);
+void		ft_double_free(void *str, char **str2);
+int			ft_not_all_digits(char *str);
 // long	ft_atol(char *s);
-int		ft_atoi(char *s);
+int			ft_atoi(char *s);
 
 //aux2.c
-int		ft_count_args(char **args);
-char	*ft_to_lower(char *s);
-int		ft_strcmp(char *s1, char *s2);
-void	ft_free_gen_struct(t_gen *gen);
+int			ft_count_args(char **args);
+char		*ft_to_lower(char *s);
+int			ft_strcmp(char *s1, char *s2);
+void		ft_free_gen_struct(t_gen *gen);
 
 //print_error.c
-int		ft_print_error(int err_nb);
+int			ft_print_error(int err_nb);
 
 //init_data.c
 t_dongle	*ft_init_dongles(t_params *p_param);
@@ -115,5 +117,9 @@ t_coder		*ft_init_coders(t_params *p_params, t_dongle *my_dongles);
 t_gen		*ft_init_gen(t_params *p, t_coder *c, t_dongle *d);
 t_gen		*ft_start_init_data(t_params *p);
 
+//heap_op.c
+void		ft_pq_swap(t_priority_q *q, t_coder *a, t_coder *b);
+int			ft_pq_push(t_gen *g, t_priority_q *pq, t_coder *new);
+t_coder		ft_pq_pop(t_priority_q *pq);
 
 #endif

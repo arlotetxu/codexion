@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 12:37:41 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/08 10:10:11 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:59:06 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_dongle	*ft_init_dongles(t_params *p)
 		d[i].pq->heap = malloc(sizeof(t_coder) * p->num_coders); //!malloc sin liberar
 		d[i].pq->size = 0;
 		d[i].pq->capacity = p->num_coders;
+		d[i].pq->is_edf = p->is_edf;
+		pthread_mutex_init(&d[i].pq->m_pq, NULL);
 		i++;
 	}
 	return (d);
@@ -56,6 +58,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 		c[i].st_comp = tv.tv_sec;
 		c[i].st_deb = 0;
 		c[i].st_ref = 0;
+		c[i].prior = 0;
 		c[i].num_comp = p->num_comp_req;
 		c[i].is_burned = 0;
 		c[i].left = &d[i];
