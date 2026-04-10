@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/09 17:29:15 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/10 13:15:43 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,11 @@ t_gen		*ft_init_gen(t_params *p, t_coder *c, t_dongle *d);
 t_gen		*ft_start_init_data(t_params *p);
 
 //heap_op.c
-void		ft_pq_swap(t_priority_q *q, t_coder *a, t_coder *b);
-int			ft_pq_push(t_gen *g, t_priority_q *pq, t_coder *new);
-t_coder		ft_pq_pop(t_priority_q *pq);
+void		ft_pq_swap(t_coder *a, t_coder *b);
+int			ft_pq_push(t_priority_q *pq, t_coder *new);
+t_coder		*ft_pq_pop(t_priority_q *pq);
+
+//create_th.c
+int			ft_create_threads(t_gen *g);
 
 #endif

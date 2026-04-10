@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 12:20:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/09 17:32:17 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/10 13:15:01 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "codexion.h"
 #include <pthread.h>
 
-void	ft_pq_swap(t_priority_q *q, t_coder *a, t_coder *b)
+void	ft_pq_swap(t_coder *a, t_coder *b)
 {
 	t_coder	temp;
 
@@ -23,37 +23,44 @@ void	ft_pq_swap(t_priority_q *q, t_coder *a, t_coder *b)
 	*b = temp;
 }
 
-int	ft_pq_push(t_gen *g, t_priority_q *pq, t_coder *new)
+int	ft_pq_push(t_priority_q *pq, t_coder *new)
 {
 	int	pos;
 
 	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
+	{
+		pthread_mutex_unlock(&pq->m_pq);
 		return (-1); //The list is full
+	}
 	pos = pq->size;
-	if (pos > 0 && pq->is_edf == 0)
+	if (pq->is_edf == 0)
 	{
 		pq->heap[pos] = *new;
 		pq->size++;
+		pthread_mutex_unlock(&pq->m_pq);
+		return (0);
 	}
-	else if (pos > 0 && pq->is_edf == 1)
+	else
 	{
 		pq->heap[pos] = *new;
 		if (pq->heap[pos - 1].prior > pq->heap[pos].prior)
-			ft_pq_swap(pq, &pq->heap[pos - 1], &pq->heap[pos]);
+			ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 		pq->size++;
 	}
 	pthread_mutex_unlock(&pq->m_pq);
 	return (0);
 }
 
-t_coder	ft_pq_pop(t_priority_q *pq)
+t_coder	*ft_pq_pop(t_priority_q *pq)
 {
-	t_coder	returned;
+	t_coder	*returned;
 	int	i;
 
 	pthread_mutex_lock(&pq->m_pq);
-	returned = pq->heap[0];
+	if (pq->size == 0)
+		return (NULL);
+	returned = pq->heap + 0;
 	i = -1;
 	while (++i < pq->size - 1)
 		pq->heap[i] = pq->heap[i + 1];
