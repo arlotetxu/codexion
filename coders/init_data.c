@@ -73,6 +73,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 {
 	t_gen	*gen;
+	int		i;
 
 	gen = malloc(sizeof(t_gen));
 	if (!p || !c || !d || !gen)
@@ -83,6 +84,9 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	pthread_mutex_init(&gen->end_sim, NULL);
 	pthread_mutex_init(&gen->m_print, NULL);
 	gen->stop_sim = 0;
+	i = -1;
+	while(++i < p->num_coders)
+		c[i].gen = gen;
 	return (gen);
 }
 

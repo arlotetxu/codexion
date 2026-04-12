@@ -18,6 +18,7 @@
 //=============DEFINITIONS=============
 typedef struct s_coder t_coder;
 typedef struct s_dongle t_dongle;
+typedef struct s_gen t_gen;
 
 typedef struct s_params
 {
@@ -60,6 +61,7 @@ typedef struct s_coder
 	int				is_burned;
 	t_dongle		*left;
 	t_dongle		*right;
+	t_gen			*gen;
 }	t_coder;
 
 typedef struct s_gen
@@ -119,10 +121,13 @@ t_gen		*ft_start_init_data(t_params *p);
 
 //heap_op.c
 void		ft_pq_swap(t_coder *a, t_coder *b);
-int			ft_pq_push(t_priority_q *pq, t_coder *new);
+int			ft_pq_push(t_priority_q *pq, t_coder *new_coder);
 t_coder		*ft_pq_pop(t_priority_q *pq);
 
 //create_th.c
 int			ft_create_threads(t_gen *g);
+
+//routine.c
+void		*ft_start_routine(void *arg);
 
 #endif

@@ -23,7 +23,7 @@ void	ft_pq_swap(t_coder *a, t_coder *b)
 	*b = temp;
 }
 
-int	ft_pq_push(t_priority_q *pq, t_coder *new)
+int	ft_pq_push(t_priority_q *pq, t_coder *new_coder)
 {
 	int	pos;
 
@@ -36,14 +36,14 @@ int	ft_pq_push(t_priority_q *pq, t_coder *new)
 	pos = pq->size;
 	if (pq->is_edf == 0)
 	{
-		pq->heap[pos] = *new;
+		pq->heap[pos] = *new_coder;
 		pq->size++;
 		pthread_mutex_unlock(&pq->m_pq);
 		return (0);
 	}
 	else
 	{
-		pq->heap[pos] = *new;
+		pq->heap[pos] = *new_coder;
 		if (pq->heap[pos - 1].prior > pq->heap[pos].prior)
 			ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 		pq->size++;

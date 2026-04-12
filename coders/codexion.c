@@ -32,6 +32,7 @@ CODIGO ERRORES
 4 - La logica elegida no es ni fifo ni edf
 5 - No se han podido guardar los parametros de entrada (memory allocation)
 6 - No se ha podido generar la estructura ppal gen
+7 - Error al crear o unir hilos
 
 */
 
@@ -53,6 +54,9 @@ int	ft_start_program(char **all_args, t_params *p_param)
 	// while (i < gen->p->num_coders)
 	// 	printf("Check: %i\n", gen->c[i++].num_comp);
 	//start routine
+	ret = ft_create_threads(gen);
+	if (ret)
+		return (ft_free_gen_struct(gen), ret);
 	ft_free_gen_struct(gen);
 	return (0);
 }
