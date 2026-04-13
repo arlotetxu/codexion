@@ -28,11 +28,18 @@ PARSEO:
 CODIGO ERRORES
 1 - Numero incorrecto de argumentos
 2 - Primeros 7 argumentos no son numericos
-3 - Algun argumento excede los limites de long
+3 - Algun argumento excede los limites de int
 4 - La logica elegida no es ni fifo ni edf
 5 - No se han podido guardar los parametros de entrada (memory allocation)
 6 - No se ha podido generar la estructura ppal gen
 7 - Error al crear o unir hilos
+
+TO DO
+
+- [] Crear marcas de tiempo
+- [] Actualizar los tiempos en la rutina de los coders
+- [] Evaluar si las variables st_deb y st_ref en t_coder son necesarias
+- [] Crear hilo watcher con su rutina
 
 */
 
@@ -50,10 +57,6 @@ int	ft_start_program(char **all_args, t_params *p_param)
 	gen = ft_start_init_data(p_param);
 	if (!gen)
 		return (6); //!Liberar?
-	// int	i = 0;
-	// while (i < gen->p->num_coders)
-	// 	printf("Check: %i\n", gen->c[i++].num_comp);
-	//start routine
 	ret = ft_create_threads(gen);
 	if (ret)
 		return (ft_free_gen_struct(gen), ret);
@@ -77,7 +80,6 @@ int	main(int argc, char **argv)
 	ret = ft_start_program(all_args, p_param);
 	if (ret)
 		return (ft_double_free(p_param, all_args), ret);
-	// printf("Check %d\n", p_param->num_comp_req);
 	printf("Todo OK hasta el momento!!\n");
 	free(p_param);
 	return (0);

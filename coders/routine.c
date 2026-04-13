@@ -14,50 +14,48 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+/*
+	Si piensas en el ciclo de vida de tu hilo dentro del `while (1)`, el flujo correcto es este:
 
-void	*ft_add_to_pq(t_coder *my_coder)
-{
-	if (my_coder->left != NULL)
-		ft_pq_push(my_coder->left->pq, my_coder);
-	if (my_coder->right != NULL)
-		ft_pq_push(my_coder->right->pq, my_coder);
-	//Poner en espera del cond de los dongles hasta que el coder sea el primero de la PQ
-	printf("Coder %i añadido a sus dongles.\n", my_coder->id);
-	return (NULL);
-}
+1.  **Tengo hambre (quiero compilar):** Me apunto en la lista de espera de mis 
+	dos dongles (Añado a las dos `pq`).
+2.  **Espero mi turno:** Intento coger los dongles. Si no puedo, me duermo con 
+	`pthread_cond_wait` hasta que sea mi turno y estén libres.
+3.  **Compilo:** Uso los dongles (hago un `usleep` simulando el tiempo de compilación).
+4.  **Termino y suelto:** Marco los dongles como libres (`status = 0`),
+	actualizo su `end_cool`, **ME BORRO de las colas de prioridad** (porque ya
+	he terminado mi turno), y aviso a los demás (`pthread_cond_broadcast` o
+	`signal`) de que los dongles están libres.
+5.  **Depuro y Refactorizo:** Hago mis otras tareas (dormir/pensar).
+6.  **Vuelvo al paso 1
+ */
+
 
 void	*ft_start_routine(void *arg)
 {
 	t_coder	*my_coder;
 
 	my_coder = (t_coder *)arg;
-	ft_add_to_pq(my_coder);
 	while (1)
 	{
-		// 1. Comprobar si debemos salir
-		// (Falta proteger estas lecturas con mutex general si se modifican desde otro hilo)
+		pthread_mutex_lock(&my_coder->gen->m_gen);
 		if (my_coder->is_burned || my_coder->num_comp <= 0)
+		{
+			pthread_mutex_unlock(&my_coder->gen->m_gen);
 			break ;
-
-		// 2. Intentar coger los dongles (Aquí es donde añadirás a la PQ y esperarás)
-		// ft_take_dongles(my_coder);
-		
-		// BORRAR O COMENTAR ESTO POR AHORA PARA QUE NO FALLE EL BUCLE
-		// ft_add_to_pq(my_coder); 
-
-		// 3. Compilar (Compile)
-		// printf("Coder %d is compiling\n", my_coder->id);
-		// usleep(tt_comp * 1000); 
-
-		// 4. Soltar los dongles
-		// ft_release_dongles(my_coder);
-
-		// 5. Depurar (Debug)
-		// printf("Coder %d is debugging\n", my_coder->id);
-		// usleep(tt_deb * 1000);
-
-		// 6. Refactorizar (Refactor)
-		// printf("Coder %d is reflecting\n", my_coder->id);
+		}
+		pthread_mutex_unlock(&my_coder->gen->m_gen);
+		ft_add_to_pq(my_coder);
+		ft_take_dongles(my_coder);
+		if (my_coder->left->status == 1 && my_coder->right->status == 1)
+		{
+			ft_print_compiling(my_coder);
+			my_coder->num_comp--;
+		}
+		// actualizar tiempos (st_comp, end_cool) 
+		ft_release_dongles(my_coder);
+		ft_print_debugging(my_coder);
+		ft_print_refactoring(my_coder);
 	}
-			return (NULL);
+	return (NULL);
 }

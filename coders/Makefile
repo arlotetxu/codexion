@@ -50,8 +50,8 @@ NAME = codexion
 
 SRC_DIR = .
 
-SRC = codexion.c parser.c parser2.c aux.c aux2.c print_error.c init_data.c \
-heap_op.c create_thr.c routine.c
+SRC = codexion.c parser.c parser2.c aux.c aux2.c prints.c init_data.c \
+heap_op.c create_thr.c routine.c compile.c
 
 
 OBJ_DIR = ./obj

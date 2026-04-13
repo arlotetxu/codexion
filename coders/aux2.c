@@ -13,6 +13,7 @@
 #include "codexion.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 int	ft_count_args(char **args)
 {
@@ -80,4 +81,15 @@ void	ft_free_gen_struct(t_gen *gen)
 	free(gen->d);
 	free(gen->c);
 	free(gen);
+}
+
+
+long	ft_get_time_ms(void)
+{
+	struct timeval	tv;
+	long			time_ms;
+
+	gettimeofday(&tv, NULL);
+	time_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time_ms);
 }

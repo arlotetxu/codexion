@@ -14,6 +14,7 @@
 # define CODEXION_H
 //=============LIBRARIES=============
 # include <pthread.h>
+#include <sys/_pthread/_pthread_mutex_t.h>
 
 //=============DEFINITIONS=============
 typedef struct s_coder t_coder;
@@ -71,6 +72,7 @@ typedef struct s_gen
 	t_dongle		*d;
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	end_sim;
+	pthread_mutex_t	m_gen;
 	int				stop_sim;
 }	t_gen;
 
@@ -109,9 +111,14 @@ int			ft_count_args(char **args);
 char		*ft_to_lower(char *s);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free_gen_struct(t_gen *gen);
+long		ft_get_time_ms(void);
 
-//print_error.c
+//prints.c
 int			ft_print_error(int err_nb);
+void		ft_print_take_dongle(int id, t_gen *g);
+void		ft_print_compiling(t_coder *my_coder);
+void		ft_print_debugging(t_coder *my_coder);
+void		ft_print_refactoring(t_coder *my_coder);
 
 //init_data.c
 t_dongle	*ft_init_dongles(t_params *p_param);
@@ -129,5 +136,12 @@ int			ft_create_threads(t_gen *g);
 
 //routine.c
 void		*ft_start_routine(void *arg);
+
+//compile.c
+void		*ft_add_to_pq(t_coder *my_coder);
+void		ft_take_left_d(t_coder *my_coder);
+void		ft_take_right_d(t_coder *my_coder);
+void		ft_take_dongles(t_coder *my_coder);
+void		ft_release_dongles(t_coder *my_coder);
 
 #endif

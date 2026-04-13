@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -55,7 +56,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 	while (i < p->num_coders)
 	{
 		c[i].id = i + 1;
-		c[i].st_comp = tv.tv_sec;
+		c[i].st_comp = tv.tv_sec * 1000;
 		c[i].st_deb = 0;
 		c[i].st_ref = 0;
 		c[i].prior = 0;
@@ -101,6 +102,7 @@ t_gen	*ft_start_init_data(t_params *p)
 	d = ft_init_dongles(p);
 	c = ft_init_coders(p, d);
 	gen = ft_init_gen(p, c, d);
+	pthread_mutex_init(&gen->m_gen, NULL);
 	if (!d || !c || !gen)
 		return (NULL);
 	return (gen);

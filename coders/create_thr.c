@@ -25,12 +25,12 @@ int	ft_create_threads(t_gen *g)
 		return (7);
 	i = -1;
 	while (++i < g->p->num_coders)
-		if(pthread_create(&th[i], NULL, ft_start_routine, g->c + i) != 0)
+		if(pthread_create(th + i, NULL, ft_start_routine, g->c + i) != 0)
 			return (7);
 	i = -1;
 	while (++i < g->p->num_coders)
 		if (pthread_join(th[i], NULL) != 0)
-			return (-1);
+			return (7);
 	//pthread_destroy
 	//pthread_mutex_destroy
 	free (th);
