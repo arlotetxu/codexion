@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/08 10:26:30 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:55:08 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ CODIGO ERRORES
 
 TO DO
 
-- [] Crear marcas de tiempo
-- [] Actualizar los tiempos en la rutina de los coders
+- [X] Crear marcas de tiempo en impresion
+- [X] Controlar enfriamiento de dongles
+- [X] Actualizar los tiempos en la rutina de los coders
 - [] Evaluar si las variables st_deb y st_ref en t_coder son necesarias
 - [] Crear hilo watcher con su rutina
+- [] Destruir hilos
+- [] Destruir mutex
+- [] README
 
 */
 
@@ -57,6 +61,7 @@ int	ft_start_program(char **all_args, t_params *p_param)
 	gen = ft_start_init_data(p_param);
 	if (!gen)
 		return (6); //!Liberar?
+	// Crear watcher
 	ret = ft_create_threads(gen);
 	if (ret)
 		return (ft_free_gen_struct(gen), ret);

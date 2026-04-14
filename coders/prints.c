@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joflorid <joflorid@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:07:40 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/03 11:15:27 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:09:26 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <_time.h>
+#include <time.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 int	ft_print_error(int err_nb)
 {
@@ -34,31 +35,49 @@ int	ft_print_error(int err_nb)
 
 void	ft_print_take_dongle(int id, t_gen *g)
 {
+	long			time;
+
+	time = (ft_get_time_ms() - g->init_time);
 	pthread_mutex_lock(&g->m_print);
-	printf("%i has taken a dongle\n", id);
+	printf("%li %i has taken a dongle\n", time, id);
 	pthread_mutex_unlock(&g->m_print);
 }
 
 void	ft_print_compiling(t_coder *my_coder)
 {
+	long			time;
+	long			init_time;
+
+	init_time = my_coder->gen->init_time;
+	time = (ft_get_time_ms() - init_time);
 	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;32m%i is compiling\n\e[0m", my_coder->id);
+	printf("\e[0;32m%li %i is compiling\n\e[0m", time, my_coder->id);
 	pthread_mutex_unlock(&my_coder->gen->m_print);
 	usleep(my_coder->gen->p->tt_comp * 1000);
 }
 
 void	ft_print_debugging(t_coder *my_coder)
 {
+	long			time;
+	long			init_time;
+
+	init_time = my_coder->gen->init_time;
+	time = (ft_get_time_ms() - init_time);
 	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;36m%i is debugging\n\e[0m", my_coder->id);
+	printf("\e[0;36m%li %i is debugging\n\e[0m", time, my_coder->id);
 	pthread_mutex_unlock(&my_coder->gen->m_print);
 	usleep(my_coder->gen->p->tt_deb * 1000);
 }
 
 void	ft_print_refactoring(t_coder *my_coder)
 {
+	long			time;
+	long			init_time;
+
+	init_time = my_coder->gen->init_time;
+	time = (ft_get_time_ms() - init_time);
 	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;33m%i is refactoring\n\e[0m", my_coder->id);
+	printf("\e[0;33m%li %i is refactoring\n\e[0m", time, my_coder->id);
 	pthread_mutex_unlock(&my_coder->gen->m_print);
 	usleep(my_coder->gen->p->tt_ref * 1000);
 }

@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 12:24:18 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/10 12:59:40 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:46:09 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 /*
 	Si piensas en el ciclo de vida de tu hilo dentro del `while (1)`, el flujo correcto es este:
 
-1.  **Tengo hambre (quiero compilar):** Me apunto en la lista de espera de mis 
+1.  **Tengo hambre (quiero compilar):** Me apunto en la lista de espera de mis
 	dos dongles (Añado a las dos `pq`).
-2.  **Espero mi turno:** Intento coger los dongles. Si no puedo, me duermo con 
+2.  **Espero mi turno:** Intento coger los dongles. Si no puedo, me duermo con
 	`pthread_cond_wait` hasta que sea mi turno y estén libres.
 3.  **Compilo:** Uso los dongles (hago un `usleep` simulando el tiempo de compilación).
 4.  **Termino y suelto:** Marco los dongles como libres (`status = 0`),
@@ -47,12 +47,7 @@ void	*ft_start_routine(void *arg)
 		pthread_mutex_unlock(&my_coder->gen->m_gen);
 		ft_add_to_pq(my_coder);
 		ft_take_dongles(my_coder);
-		if (my_coder->left->status == 1 && my_coder->right->status == 1)
-		{
-			ft_print_compiling(my_coder);
-			my_coder->num_comp--;
-		}
-		// actualizar tiempos (st_comp, end_cool) 
+		ft_start_compile(my_coder);
 		ft_release_dongles(my_coder);
 		ft_print_debugging(my_coder);
 		ft_print_refactoring(my_coder);

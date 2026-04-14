@@ -6,13 +6,14 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 12:20:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/10 13:15:01 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:52:04 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "codexion.h"
 #include <pthread.h>
+#include <stdio.h>
 
 void	ft_pq_swap(t_coder *a, t_coder *b)
 {
@@ -29,10 +30,7 @@ int	ft_pq_push(t_priority_q *pq, t_coder *new_coder)
 
 	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
-	{
-		pthread_mutex_unlock(&pq->m_pq);
-		return (-1); //The list is full
-	}
+		return (pthread_mutex_unlock(&pq->m_pq), -1); //The list is full
 	pos = pq->size;
 	if (pq->is_edf == 0)
 	{
@@ -44,27 +42,41 @@ int	ft_pq_push(t_priority_q *pq, t_coder *new_coder)
 	else
 	{
 		pq->heap[pos] = *new_coder;
-		if (pq->heap[pos - 1].prior > pq->heap[pos].prior)
-			ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 		pq->size++;
+		if (pos > 0)
+			if (pq->heap[pos - 1].prior > pq->heap[pos].prior
+				|| (pq->heap[pos - 1].prior == pq->heap[pos].prior
+					&& pq->heap[pos - 1].id < pq->heap[pos].id))
+			ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 	}
 	pthread_mutex_unlock(&pq->m_pq);
 	return (0);
 }
 
-t_coder	*ft_pq_pop(t_priority_q *pq)
+void	ft_pq_pop(t_priority_q *pq, int coder_id)
 {
-	t_coder	*returned;
 	int	i;
+	int	target;
 
 	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size == 0)
-		return (NULL);
-	returned = pq->heap + 0;
+	{
+		pthread_mutex_unlock(&pq->m_pq);
+		return ;
+	}
+	target = -1;
 	i = -1;
-	while (++i < pq->size - 1)
-		pq->heap[i] = pq->heap[i + 1];
-	pq->size--;
+	while (++i < pq->size)
+		if (pq->heap[i].id == coder_id)
+			target = i;
+	if (target != -1)
+	{
+		while (target < pq->size - 1)
+		{
+			pq->heap[target] = pq->heap[target + 1];
+			target++;
+		}
+		pq->size--;
+	}
 	pthread_mutex_unlock(&pq->m_pq);
-	return (returned);
 }

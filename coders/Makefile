@@ -6,7 +6,7 @@
 #    By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 11:11:03 by joflorid          #+#    #+#              #
-#    Updated: 2026/04/10 12:25:28 by joflorid         ###   ########.fr        #
+#    Updated: 2026/04/14 10:40:46 by joflorid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ NAME = codexion
 SRC_DIR = .
 
 SRC = codexion.c parser.c parser2.c aux.c aux2.c prints.c init_data.c \
-heap_op.c create_thr.c routine.c compile.c
+heap_op.c create_thr.c routine.c take_dongles.c compiling.c
 
 
 OBJ_DIR = ./obj

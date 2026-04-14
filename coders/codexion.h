@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/10 13:15:43 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:54:51 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define CODEXION_H
 //=============LIBRARIES=============
 # include <pthread.h>
-#include <sys/_pthread/_pthread_mutex_t.h>
 
 //=============DEFINITIONS=============
 typedef struct s_coder t_coder;
@@ -74,6 +73,7 @@ typedef struct s_gen
 	pthread_mutex_t	end_sim;
 	pthread_mutex_t	m_gen;
 	int				stop_sim;
+	long			init_time;
 }	t_gen;
 
 
@@ -137,11 +137,13 @@ int			ft_create_threads(t_gen *g);
 //routine.c
 void		*ft_start_routine(void *arg);
 
-//compile.c
+//take_dongles.c
 void		*ft_add_to_pq(t_coder *my_coder);
-void		ft_take_left_d(t_coder *my_coder);
-void		ft_take_right_d(t_coder *my_coder);
+void		ft_take_dongle(t_coder *my_coder, t_dongle *d);
 void		ft_take_dongles(t_coder *my_coder);
 void		ft_release_dongles(t_coder *my_coder);
+
+//compiling.c
+void		ft_start_compile(t_coder *my_coder);
 
 #endif
