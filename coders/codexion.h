@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/15 17:39:08 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/17 12:38:52 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_priority_q
 typedef struct s_dongle
 {
 	pthread_mutex_t		m_dongle;
+	pthread_mutex_t		m_status;
 	long				end_cool;
 	int					status;
 	pthread_cond_t		cond;
@@ -72,8 +73,10 @@ typedef struct s_gen
 	pthread_mutex_t	m_print;
 	pthread_mutex_t	end_sim;
 	pthread_mutex_t	m_gen;
+	pthread_mutex_t	m_launch;
 	int				stop_sim;
 	long			init_time;
+	int				launch;
 }	t_gen;
 
 
@@ -113,6 +116,9 @@ int			ft_strcmp(char *s1, char *s2);
 void		ft_free_gen_struct(t_gen *gen);
 long		ft_get_time_ms(void);
 
+//aux3.c
+void		ft_sleep_ms(long ms);
+
 //prints.c
 int			ft_print_error(int err_nb);
 void		ft_print_take_dongle(int id, t_gen *g);
@@ -130,6 +136,8 @@ t_gen		*ft_start_init_data(t_params *p);
 void		ft_pq_swap(t_coder *a, t_coder *b);
 int			ft_pq_push(t_priority_q *pq, t_coder *new_coder);
 void		ft_pq_pop(t_priority_q *pq, int coder_id);
+void		ft_print_heaps(t_gen *g);
+int			ft_pq_initial_push(t_priority_q *pq, t_coder *m);
 
 //create_th.c
 int			ft_create_threads(t_gen *g);
@@ -142,6 +150,7 @@ void		*ft_add_to_pq(t_coder *my_coder);
 void		ft_take_dongle(t_coder *my_coder, t_dongle *d);
 void		ft_take_dongles(t_coder *my_coder);
 void		ft_release_dongles(t_coder *my_coder);
+int			ft_can_take(t_coder *m);
 
 //compiling.c
 void		ft_start_compile(t_coder *my_coder);

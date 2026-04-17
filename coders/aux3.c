@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compiling.c                                        :+:      :+:    :+:   */
+/*   aux3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/14 10:30:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 17:44:28 by joflorid         ###   ########.fr       */
+/*   Created: 2026/04/16 10:04:55 by joflorid          #+#    #+#             */
+/*   Updated: 2026/04/16 10:11:48 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <sys/time.h>
 #include <unistd.h>
 
-void	ft_start_compile(t_coder *my_coder)
+void	ft_sleep_ms(long ms)
 {
-	ft_print_compiling(my_coder);
-	pthread_mutex_lock(&my_coder->left->pq->m_pq);
-	pthread_mutex_lock(&my_coder->right->pq->m_pq);
-	my_coder->num_comp--;
-	my_coder->st_comp = ft_get_time_ms();
-	my_coder->prior = my_coder->st_comp + my_coder->gen->p->tt_burn;
-	pthread_mutex_unlock(&pq->m_pq);
+	long	i;
 
-	ft_print_debugging(my_coder);
-	ft_print_refactoring(my_coder);
+	i = ft_get_time_ms();
+	while ((ft_get_time_ms() - i) < ms)
+		usleep(100);
 }
-
