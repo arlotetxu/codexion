@@ -16,9 +16,9 @@
 # include <pthread.h>
 
 //=============DEFINITIONS=============
-typedef struct s_coder t_coder;
-typedef struct s_dongle t_dongle;
-typedef struct s_gen t_gen;
+typedef struct s_coder	t_coder;
+typedef struct s_dongle	t_dongle;
+typedef struct s_gen	t_gen;
 
 typedef struct s_params
 {
@@ -43,11 +43,10 @@ typedef struct s_priority_q
 
 typedef struct s_dongle
 {
-	pthread_mutex_t		m_dongle;
+	// pthread_mutex_t		m_dongle;
 	pthread_mutex_t		m_status;
 	long				end_cool;
 	int					status;
-	pthread_cond_t		cond;
 	t_priority_q		*pq;
 }	t_dongle;
 
@@ -55,13 +54,12 @@ typedef struct s_coder
 {
 	int				id;
 	int				st_comp;
-	int				st_deb;
-	int				st_ref;
 	long			prior; // EDF: st_comp + tt_burn
 	int				num_comp;
 	int				is_burned;
 	t_dongle		*left;
 	t_dongle		*right;
+	pthread_mutex_t	m_coder;
 	t_gen			*gen;
 }	t_coder;
 
@@ -71,14 +69,13 @@ typedef struct s_gen
 	t_coder			*c;
 	t_dongle		*d;
 	pthread_mutex_t	m_print;
-	pthread_mutex_t	end_sim;
+	pthread_mutex_t	m_stop_sim;
 	pthread_mutex_t	m_gen;
 	pthread_mutex_t	m_launch;
 	int				stop_sim;
 	long			init_time;
 	int				launch;
 }	t_gen;
-
 
 //=============PROTOTYPES//=============
 //main
@@ -147,7 +144,6 @@ void		*ft_start_routine(void *arg);
 
 //take_dongles.c
 void		*ft_add_to_pq(t_coder *my_coder);
-void		ft_take_dongle(t_coder *my_coder, t_dongle *d);
 void		ft_take_dongles(t_coder *my_coder);
 void		ft_release_dongles(t_coder *my_coder);
 int			ft_can_take(t_coder *m);

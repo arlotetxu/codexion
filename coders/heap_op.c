@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "codexion.h"
 #include <pthread.h>
 #include <stdio.h>
@@ -51,32 +50,40 @@ void	ft_pq_swap(t_coder *a, t_coder *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
+	pthread_mutex_lock(&a->gen->m_print);
+	printf("Swapping ID(A): %i /prior: %li - ID(B): %i/ prior: %li\n", a->id, a->prior, b->id, b->prior);
+	pthread_mutex_unlock(&a->gen->m_print);
 }
 
-int	ft_pq_push(t_priority_q *pq, t_coder *new_coder)
+int	ft_pq_push(t_priority_q *pq, t_coder *m)
 {
 	int	pos;
 
 	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
-		return (pthread_mutex_unlock(&pq->m_pq), -1); //The list is full
+		return (pthread_mutex_unlock(&pq->m_pq), -1);
 	pos = pq->size;
 	if (pq->is_edf == 0)
 	{
-		pq->heap[pos] = *new_coder;
+		pq->heap[pos] = *m;
 		pq->size++;
 		pthread_mutex_unlock(&pq->m_pq);
 		return (0);
 	}
 	else
 	{
-		pq->heap[pos] = *new_coder;
+		pq->heap[pos] = *m;
 		pq->size++;
 		if (pos > 0)
+		{
+			// printf("\e[0;31mprior pos-1[%i]: %li / prior pos[%i]: %li\n\e[0m", 
+			// 	pq->heap[pos - 1].id, pq->heap[pos - 1].prior, pq->heap[pos].id, 
+			// 	pq->heap[pos].prior);
 			if (pq->heap[pos - 1].prior > pq->heap[pos].prior
 				|| (pq->heap[pos - 1].prior == pq->heap[pos].prior
 					&& pq->heap[pos - 1].id < pq->heap[pos].id))
-			ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
+				ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
+		}
 	}
 	pthread_mutex_unlock(&pq->m_pq);
 	return (0);
@@ -116,7 +123,7 @@ int	ft_pq_initial_push(t_priority_q *pq, t_coder *m)
 
 	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
-		return (pthread_mutex_unlock(&pq->m_pq), -1); //The list is full
+		return (pthread_mutex_unlock(&pq->m_pq), -1);
 	pos = pq->size;
 	pq->heap[pos] = *m;
 	pq->size++;

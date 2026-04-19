@@ -33,24 +33,23 @@ void	ft_add_initial_heap(t_gen *g)
 	}
 }
 
-
 int	ft_create_threads(t_gen *g)
 {
-	int	i;
+	int			i;
 	pthread_t	*th;
 
 	th = malloc(sizeof(pthread_t) * g->p->num_coders);
 	if (!th)
 		return (7);
 	ft_add_initial_heap(g);
-	// ft_print_heaps(g);
-	// exit(1);
 	i = -1;
 	while (++i < g->p->num_coders)
 	{
-		if(pthread_create(th + i, NULL, ft_start_routine, g->c + i) != 0)
+		if (pthread_create(th + i, NULL, ft_start_routine, g->c + i) != 0)
 			return (7);
+		pthread_mutex_lock(&g->m_launch);
 		g->launch++;
+		pthread_mutex_unlock(&g->m_launch);
 	}
 	i = -1;
 	while (++i < g->p->num_coders)
@@ -61,4 +60,3 @@ int	ft_create_threads(t_gen *g)
 	free (th);
 	return (0);
 }
-

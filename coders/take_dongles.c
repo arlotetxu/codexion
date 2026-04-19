@@ -15,11 +15,27 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-void	*ft_add_to_pq(t_coder *my_coder)
+/*
+	How EDF Works for a Dongle
+Just like FIFO, a coder first tries to place itself in the first_in_queue or
+second_in_queue slot of the desired dongle.
+If the dongle is on cooldown, the coder waits.
+Once the dongle is available (not on cooldown), it doesn't automatically go to
+first_in_queue. Instead, the dongle compares the last_compile timestamps of the
+coders in first_in_queue and second_in_queue (if both are present).
+The coder with the earliest last_compile timestamp (meaning they compiled
+longest ago and are closest to burnout) is considered the "highest priority"
+and gets the dongle.
+If the coder currently trying to acquire the dongle is not the highest priority,
+it waits and polls again, allowing a higher-priority coder to potentially take
+the dongle first.
+ */
+
+void	*ft_add_to_pq(t_coder *m)
 {
-	ft_pq_push(my_coder->left->pq, my_coder);
-	if (my_coder->right != NULL)
-		ft_pq_push(my_coder->right->pq, my_coder);
+	ft_pq_push(m->left->pq, m);
+	if (m->right != NULL)
+		ft_pq_push(m->right->pq, m);
 	return (NULL);
 }
 
@@ -35,15 +51,12 @@ int	ft_can_take(t_coder *m)
 		pthread_mutex_lock(&m->right->m_status);
 		pthread_mutex_lock(&m->left->m_status);
 	}
-	// if(m->left->pq->size > 0 && m->right->pq->size > 0 &&
-	// 	m->left->pq->heap[0].id == m->id && m->right->pq->heap[0].id == m->id &&
-	// 	m->left->status == 0 && m->right->status == 0)
-	if(m->left->pq->size > 0 && m->right->pq->size > 0 &&
-		m->left->pq->heap[0].id == m->id &&
-		m->left->status == 0 && m->right->status == 0 &&
-		ft_get_time_ms() >= m->left->end_cool
-		&& ft_get_time_ms() >= m->left->end_cool)
-			return (1);
+	if (m->left->pq->size > 0 && m->right->pq->size > 0
+		&& m->left->pq->heap[0].id == m->id
+		&& m->left->status == 0 && m->right->status == 0
+		&& ft_get_time_ms() >= m->left->end_cool
+		&& ft_get_time_ms() >= m->right->end_cool)
+		return (1);
 	if (m->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&m->left->m_status);
@@ -54,98 +67,44 @@ int	ft_can_take(t_coder *m)
 		pthread_mutex_unlock(&m->right->m_status);
 		pthread_mutex_unlock(&m->left->m_status);
 	}
-	// pthread_mutex_unlock(&m->left->m_status);
-	// pthread_mutex_unlock(&m->right->m_status);
 	return (0);
 }
 
-// void	ft_take_dongle(t_coder *my_coder, t_dongle *d)
-// {
-// 	long	wait_time;
-
-// 	pthread_mutex_lock(&d->m_dongle);
-// 	while (1)
-// 	{
-// 		pthread_mutex_lock(&d->pq->m_pq);
-// 		if(d->pq->size > 0 && d->pq->heap[0].id == my_coder->id
-// 			&& d->status == 0)
-// 		{
-// 			pthread_mutex_unlock(&d->pq->m_pq);
-// 			wait_time = d->end_cool - ft_get_time_ms();
-// 			if (wait_time <= 0)
-// 				break;
-// 			pthread_mutex_unlock(&d->m_dongle);
-// 			ft_sleep_ms(wait_time);
-// 			pthread_mutex_lock(&d->m_dongle);
-// 			continue;
-// 		}
-// 		pthread_mutex_unlock(&d->pq->m_pq);
-// 		pthread_cond_wait(&d->cond, &d->m_dongle);
-// 	}
-// 	d->status = 1;
-// 	ft_print_take_dongle(my_coder->id, my_coder->gen);
-// 	pthread_mutex_unlock(&d->m_dongle);
-// }
-
-void	ft_take_dongle(t_coder *m, t_dongle *d)
+void	ft_take_dongles(t_coder *m)
 {
-	// long	wait_time;
-
-	// wait_time = d->end_cool - ft_get_time_ms();
-	// pthread_mutex_lock(&d->m_status);
-
-	d->status = 1;
-	pthread_mutex_unlock(&d->m_status);
-	// if (wait_time > 0)
-		// ft_sleep_ms(wait_time);
-
-	ft_print_take_dongle(m->id, m->gen);
-}
-
-void	ft_take_dongles(t_coder *my_coder)
-{
-	if (my_coder->id % 2 == 0)
-	// if (my_coder->left < my_coder->right)
+	if (m->id % 2 == 0)
 	{
-		ft_take_dongle(my_coder, my_coder->left);
-		ft_take_dongle(my_coder, my_coder->right);
+		m->left->status = 1;
+		pthread_mutex_unlock(&m->left->m_status);
+		ft_print_take_dongle(m->id, m->gen);
+		m->right->status = 1;
+		pthread_mutex_unlock(&m->right->m_status);
+		ft_print_take_dongle(m->id, m->gen);
 	}
 	else
 	{
-		ft_take_dongle(my_coder, my_coder->right);
-		ft_take_dongle(my_coder, my_coder->left);
+		m->right->status = 1;
+		pthread_mutex_unlock(&m->right->m_status);
+		ft_print_take_dongle(m->id, m->gen);
+		m->left->status = 1;
+		pthread_mutex_unlock(&m->left->m_status);
+		ft_print_take_dongle(m->id, m->gen);
 	}
 }
 
-// void	ft_take_dongles(t_coder *my_coder)
-// {
-// 	ft_take_dongle(my_coder, my_coder->left);
-// 	ft_take_dongle(my_coder, my_coder->right);
-// }
-
-void	ft_release_dongles(t_coder *my_coder)
+void	ft_release_dongles(t_coder *m)
 {
 	long	d_cool;
 
-	d_cool = my_coder->gen->p->tt_cooldown;
-
-	// pthread_mutex_lock(&my_coder->left->m_dongle);
-	pthread_mutex_lock(&my_coder->left->m_status);
-	my_coder->left->status = 0;
-
-	my_coder->left->end_cool = ft_get_time_ms() + d_cool;
-	ft_pq_pop(my_coder->left->pq, my_coder->id);
-	pthread_mutex_unlock(&my_coder->left->m_status);
-	// ft_pq_swap(my_coder->left->pq->heap + 0, my_coder->left->pq->heap + 1);
-	// pthread_cond_broadcast(&my_coder->left->cond);
-
-	// pthread_mutex_lock(&my_coder->right->m_dongle);
-	pthread_mutex_lock(&my_coder->right->m_status);
-	my_coder->right->status = 0;
-
-	my_coder->right->end_cool = ft_get_time_ms() + d_cool;
-	ft_pq_pop(my_coder->right->pq, my_coder->id);
-	pthread_mutex_unlock(&my_coder->right->m_status);
-	// ft_pq_swap(my_coder->right->pq->heap + 0, my_coder->right->pq->heap + 1);
-	// pthread_cond_broadcast(&my_coder->right->cond);
+	d_cool = m->gen->p->tt_cooldown;
+	pthread_mutex_lock(&m->left->m_status);
+	m->left->status = 0;
+	m->left->end_cool = ft_get_time_ms() + d_cool;
+	ft_pq_pop(m->left->pq, m->id);
+	pthread_mutex_unlock(&m->left->m_status);
+	pthread_mutex_lock(&m->right->m_status);
+	m->right->status = 0;
+	m->right->end_cool = ft_get_time_ms() + d_cool;
+	ft_pq_pop(m->right->pq, m->id);
+	pthread_mutex_unlock(&m->right->m_status);
 }

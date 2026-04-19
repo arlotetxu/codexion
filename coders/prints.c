@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
+#include <arm/types.h>
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -43,41 +44,53 @@ void	ft_print_take_dongle(int id, t_gen *g)
 	pthread_mutex_unlock(&g->m_print);
 }
 
-void	ft_print_compiling(t_coder *my_coder)
+void	ft_print_compiling(t_coder *m)
 {
 	long			time;
+	long			sleep;
 	long			init_time;
 
-	init_time = my_coder->gen->init_time;
+	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
-	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;32m%li %i is compiling\n\e[0m", time, my_coder->id);
-	pthread_mutex_unlock(&my_coder->gen->m_print);
-	usleep(my_coder->gen->p->tt_comp * 1000);
+	sleep = ft_get_time_ms() + m->gen->p->tt_comp;
+	pthread_mutex_lock(&m->gen->m_print);
+	printf("\e[0;32m%li %i is compiling\n\e[0m", time, m->id);
+	pthread_mutex_unlock(&m->gen->m_print);
+	while (ft_get_time_ms() < sleep)
+	{
+	}
 }
 
-void	ft_print_debugging(t_coder *my_coder)
+void	ft_print_debugging(t_coder *m)
 {
 	long			time;
+	long			sleep;
 	long			init_time;
 
-	init_time = my_coder->gen->init_time;
+	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
-	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;36m%li %i is debugging\n\e[0m", time, my_coder->id);
-	pthread_mutex_unlock(&my_coder->gen->m_print);
-	usleep(my_coder->gen->p->tt_deb * 1000);
+	sleep = ft_get_time_ms() + m->gen->p->tt_deb;
+	pthread_mutex_lock(&m->gen->m_print);
+	printf("\e[0;36m%li %i is debugging\n\e[0m", time, m->id);
+	pthread_mutex_unlock(&m->gen->m_print);
+	while (ft_get_time_ms() < sleep)
+	{
+	}
 }
 
-void	ft_print_refactoring(t_coder *my_coder)
+void	ft_print_refactoring(t_coder *m)
 {
 	long			time;
+	long			sleep;
 	long			init_time;
 
-	init_time = my_coder->gen->init_time;
+	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
-	pthread_mutex_lock(&my_coder->gen->m_print);
-	printf("\e[0;33m%li %i is refactoring\n\e[0m", time, my_coder->id);
-	pthread_mutex_unlock(&my_coder->gen->m_print);
-	usleep(my_coder->gen->p->tt_ref * 1000);
+	sleep = ft_get_time_ms() + m->gen->p->tt_ref;
+	pthread_mutex_lock(&m->gen->m_print);
+	printf("\e[0;33m%li %i is refactoring\n\e[0m", time, m->id);
+	pthread_mutex_unlock(&m->gen->m_print);
+	while (ft_get_time_ms() < sleep)
+	{
+	}
 }

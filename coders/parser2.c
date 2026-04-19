@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 int	ft_check_args_nums(char **args)
 {
 	int	i;

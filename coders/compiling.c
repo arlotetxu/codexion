@@ -11,20 +11,20 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
+#include <pthread.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdio.h>
 
-void	ft_start_compile(t_coder *my_coder)
+void	ft_start_compile(t_coder *m)
 {
-	ft_print_compiling(my_coder);
-	pthread_mutex_lock(&my_coder->left->pq->m_pq);
-	pthread_mutex_lock(&my_coder->right->pq->m_pq);
-	my_coder->num_comp--;
-	my_coder->st_comp = ft_get_time_ms();
-	my_coder->prior = my_coder->st_comp + my_coder->gen->p->tt_burn;
-	pthread_mutex_unlock(&pq->m_pq);
-
-	ft_print_debugging(my_coder);
-	ft_print_refactoring(my_coder);
+	pthread_mutex_lock(&m->m_coder);
+	m->st_comp = ft_get_time_ms();
+	m->prior = ft_get_time_ms() + m->gen->p->tt_burn;
+	m->num_comp--;
+	pthread_mutex_unlock(&m->m_coder);
+	ft_print_compiling(m);
+	ft_release_dongles(m);
+	ft_print_debugging(m);
+	ft_print_refactoring(m);
 }
-

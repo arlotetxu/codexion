@@ -83,7 +83,6 @@ void	ft_free_gen_struct(t_gen *gen)
 	free(gen);
 }
 
-
 long	ft_get_time_ms(void)
 {
 	struct timeval	tv;

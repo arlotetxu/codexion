@@ -27,9 +27,8 @@ t_dongle	*ft_init_dongles(t_params *p)
 	i = -1;
 	while (++i < p->num_coders)
 	{
-		pthread_mutex_init(&d[i].m_dongle, NULL);
+		// pthread_mutex_init(&d[i].m_dongle, NULL);
 		pthread_mutex_init(&d[i].m_status, NULL);
-		pthread_cond_init(&d[i].cond, NULL);
 		d[i].end_cool = 0;
 		d[i].status = 0;
 		d[i].pq = malloc(sizeof(t_priority_q)); //!malloc sin liberar
@@ -51,7 +50,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 	int		i;
 	t_coder	*c;
 
-	c = malloc(sizeof(t_coder) * p->num_coders ); //!malloc sin liberar
+	c = malloc(sizeof(t_coder) * p->num_coders); //!malloc sin liberar
 	if (!p || !c)
 		return (NULL); //!Liberar?
 	i = 0;
@@ -59,8 +58,6 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 	{
 		c[i].id = i + 1;
 		c[i].st_comp = ft_get_time_ms();
-		c[i].st_deb = 0;
-		c[i].st_ref = 0;
 		c[i].prior = ft_get_time_ms() + p->tt_burn;
 		c[i].num_comp = p->num_comp_req;
 		c[i].is_burned = 0;
@@ -68,6 +65,7 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 		c[i].right = NULL;
 		if (p->num_coders > 1)
 			c[i].right = &d[(i + 1) % p->num_coders];
+		pthread_mutex_init(&c->m_coder, NULL);
 		i++;
 	}
 	return (c);
@@ -84,7 +82,7 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	gen->p = p;
 	gen->c = c;
 	gen->d = d;
-	pthread_mutex_init(&gen->end_sim, NULL);
+	pthread_mutex_init(&gen->m_stop_sim, NULL);
 	pthread_mutex_init(&gen->m_print, NULL);
 	pthread_mutex_init(&gen->m_gen, NULL);
 	pthread_mutex_init(&gen->m_launch, NULL);
@@ -92,7 +90,7 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	gen->init_time = ft_get_time_ms();
 	gen->launch = 0;
 	i = -1;
-	while(++i < p->num_coders)
+	while (++i < p->num_coders)
 		c[i].gen = gen;
 	return (gen);
 }
