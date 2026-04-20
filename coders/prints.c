@@ -6,12 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:07:40 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/14 12:09:26 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:09:30 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <arm/types.h>
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>

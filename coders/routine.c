@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
@@ -16,7 +16,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 /*
-	Si piensas en el ciclo de vida de tu hilo dentro del `while (1)`, 
+	Si piensas en el ciclo de vida de tu hilo dentro del `while (1)`,
 	el flujo correcto es este:
 
 1.  **Tengo hambre (quiero compilar):** Me apunto en la lista de espera de mis

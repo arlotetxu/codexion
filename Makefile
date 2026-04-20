@@ -6,7 +6,7 @@
 #    By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 11:11:03 by joflorid          #+#    #+#              #
-#    Updated: 2026/04/14 10:40:46 by joflorid         ###   ########.fr        #
+#    Updated: 2026/04/20 10:41:42 by joflorid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 #NAME = $(SRC_DIR)/push_swap
 NAME = codexion
 
-SRC_DIR = .
+SRC_DIR = ./coders
 
 SRC = codexion.c parser.c parser2.c aux.c aux2.c prints.c init_data.c \
 heap_op.c create_thr.c routine.c take_dongles.c compiling.c

@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 15:36:35 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 17:07:24 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:53:09 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*ft_add_to_pq(t_coder *m)
 	return (NULL);
 }
 
-int	ft_can_take(t_coder *m)
+static void	ft_mutex(t_coder *m)
 {
 	if (m->id % 2 == 0)
 	{
@@ -51,6 +51,12 @@ int	ft_can_take(t_coder *m)
 		pthread_mutex_lock(&m->right->m_status);
 		pthread_mutex_lock(&m->left->m_status);
 	}
+}
+
+int	ft_can_take(t_coder *m)
+{
+	// pthread_mutex_lock(&m->gen->m_gen);
+	ft_mutex(m);
 	if (m->left->pq->size > 0 && m->right->pq->size > 0
 		&& m->left->pq->heap[0].id == m->id
 		&& m->left->status == 0 && m->right->status == 0
@@ -67,6 +73,7 @@ int	ft_can_take(t_coder *m)
 		pthread_mutex_unlock(&m->right->m_status);
 		pthread_mutex_unlock(&m->left->m_status);
 	}
+	// pthread_mutex_unlock(&m->gen->m_gen);
 	return (0);
 }
 

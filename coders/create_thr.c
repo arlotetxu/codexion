@@ -6,13 +6,14 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 12:18:34 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 12:41:27 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:06:02 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void	ft_add_initial_heap(t_gen *g)
 {

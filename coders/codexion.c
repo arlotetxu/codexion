@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/14 17:55:08 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:57:05 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ CODIGO ERRORES
 6 - No se ha podido generar la estructura ppal gen
 7 - Error al crear o unir hilos
 
+
 TO DO
 
 - [X] Crear marcas de tiempo en impresion
 - [X] Controlar enfriamiento de dongles
 - [X] Actualizar los tiempos en la rutina de los coders
-- [] Evaluar si las variables st_deb y st_ref en t_coder son necesarias
+- [X] Evaluar si las variables st_deb y st_ref en t_coder son necesarias
 - [] Crear hilo watcher con su rutina
 - [] Destruir hilos
 - [] Destruir mutex

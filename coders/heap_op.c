@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 12:20:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 17:08:22 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 12:37:52 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	ft_pq_swap(t_coder *a, t_coder *b)
 	*a = *b;
 	*b = temp;
 	pthread_mutex_lock(&a->gen->m_print);
-	printf("Swapping ID(A): %i /prior: %li - ID(B): %i/ prior: %li\n", a->id, a->prior, b->id, b->prior);
+	printf("Swapping ID(A): %i /prior: %li - ID(B): %i/ prior: %li\n",
+		a->id, a->prior, b->id, b->prior);
 	pthread_mutex_unlock(&a->gen->m_print);
 }
 
@@ -76,8 +77,8 @@ int	ft_pq_push(t_priority_q *pq, t_coder *m)
 		pq->size++;
 		if (pos > 0)
 		{
-			// printf("\e[0;31mprior pos-1[%i]: %li / prior pos[%i]: %li\n\e[0m", 
-			// 	pq->heap[pos - 1].id, pq->heap[pos - 1].prior, pq->heap[pos].id, 
+			// printf("\e[0;31mprior pos-1[%i]: %li / prior pos[%i]: %li\n\e[0m",
+			// 	pq->heap[pos - 1].id, pq->heap[pos - 1].prior, pq->heap[pos].id,
 			// 	pq->heap[pos].prior);
 			if (pq->heap[pos - 1].prior > pq->heap[pos].prior
 				|| (pq->heap[pos - 1].prior == pq->heap[pos].prior

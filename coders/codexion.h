@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 12:38:52 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:07:52 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_coder
 	t_dongle		*left;
 	t_dongle		*right;
 	pthread_mutex_t	m_coder;
+	pthread_mutex_t	m_st_comp;
 	t_gen			*gen;
 }	t_coder;
 
@@ -140,6 +141,7 @@ int			ft_pq_initial_push(t_priority_q *pq, t_coder *m);
 int			ft_create_threads(t_gen *g);
 
 //routine.c
+void		ft_wait_coders(t_coder *m);
 void		*ft_start_routine(void *arg);
 
 //take_dongles.c
