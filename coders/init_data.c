@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 12:37:41 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 13:45:43 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:02:03 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,19 @@ t_dongle	*ft_init_dongles(t_params *p)
 	i = -1;
 	while (++i < p->num_coders)
 	{
-		// pthread_mutex_init(&d[i].m_dongle, NULL);
-		pthread_mutex_init(&d[i].m_status, NULL);
+		pthread_mutex_init(&d[i].m_dongle, NULL);
+		// pthread_mutex_init(&d[i].m_status, NULL);
+		pthread_cond_init(&d->w_coold, NULL);
 		d[i].end_cool = 0;
 		d[i].status = 0;
 		d[i].pq = malloc(sizeof(t_priority_q)); //!malloc sin liberar
-		if (!d[i].pq)
-			return (NULL); //!Liberar
 		d[i].pq->heap = malloc(sizeof(t_coder) * 2); //!malloc sin liberar
-		if (!d[i].pq->heap)
+		if (!d[i].pq || !d[i].pq->heap)
 			return (NULL); //!Liberar
 		d[i].pq->size = 0;
 		d[i].pq->capacity = p->num_coders;
 		d[i].pq->is_edf = p->is_edf;
-		pthread_mutex_init(&d[i].pq->m_pq, NULL);
+		// pthread_mutex_init(&d[i].pq->m_pq, NULL);
 	}
 	return (d);
 }
@@ -65,8 +64,8 @@ t_coder	*ft_init_coders(t_params *p, t_dongle *d)
 		c[i].right = NULL;
 		if (p->num_coders > 1)
 			c[i].right = &d[(i + 1) % p->num_coders];
-		pthread_mutex_init(&c->m_coder, NULL);
-		pthread_mutex_init(&c->m_st_comp, NULL);
+		pthread_mutex_init(&c[i].m_coder, NULL);
+		// pthread_mutex_init(&c->m_st_comp, NULL);
 		i++;
 	}
 	return (c);
@@ -87,6 +86,7 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	pthread_mutex_init(&gen->m_print, NULL);
 	pthread_mutex_init(&gen->m_gen, NULL);
 	pthread_mutex_init(&gen->m_launch, NULL);
+	pthread_cond_init(&gen->w_align, NULL);
 	gen->stop_sim = 0;
 	gen->init_time = ft_get_time_ms();
 	gen->launch = 0;

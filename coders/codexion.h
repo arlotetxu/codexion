@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 19:07:52 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:16:20 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_params
 typedef struct s_priority_q
 {
 	t_coder			*heap;
-	pthread_mutex_t	m_pq;
 	int				size;
 	int				capacity;
 	int				is_edf;
@@ -43,8 +42,8 @@ typedef struct s_priority_q
 
 typedef struct s_dongle
 {
-	// pthread_mutex_t		m_dongle;
-	pthread_mutex_t		m_status;
+	pthread_mutex_t		m_dongle;
+	pthread_cond_t		w_coold;
 	long				end_cool;
 	int					status;
 	t_priority_q		*pq;
@@ -54,13 +53,12 @@ typedef struct s_coder
 {
 	int				id;
 	int				st_comp;
-	long			prior; // EDF: st_comp + tt_burn
+	long			prior;
 	int				num_comp;
 	int				is_burned;
 	t_dongle		*left;
 	t_dongle		*right;
 	pthread_mutex_t	m_coder;
-	pthread_mutex_t	m_st_comp;
 	t_gen			*gen;
 }	t_coder;
 
@@ -73,6 +71,7 @@ typedef struct s_gen
 	pthread_mutex_t	m_stop_sim;
 	pthread_mutex_t	m_gen;
 	pthread_mutex_t	m_launch;
+	pthread_cond_t	w_align;
 	int				stop_sim;
 	long			init_time;
 	int				launch;
@@ -91,7 +90,6 @@ char		**ft_arg_split(char *argv, char sep);
 int			ft_num_args(char **all_args);
 
 //parser2.c
-
 int			ft_check_args_nums(char **args);
 int			ft_check_arg_int(char **args);
 int			ft_check_last_arg(char **args);
@@ -101,10 +99,8 @@ int			ft_start_parsing(char **all_args, t_params *p_param);
 //aux.c
 int			ft_strlen(char *str);
 int			ft_count_words(char *str, char sep);
-// void	ft_double_free(char *str, char **str2);
 void		ft_double_free(void *str, char **str2);
 int			ft_not_all_digits(char *str);
-// long	ft_atol(char *s);
 int			ft_atoi(char *s);
 
 //aux2.c
@@ -113,9 +109,6 @@ char		*ft_to_lower(char *s);
 int			ft_strcmp(char *s1, char *s2);
 void		ft_free_gen_struct(t_gen *gen);
 long		ft_get_time_ms(void);
-
-//aux3.c
-void		ft_sleep_ms(long ms);
 
 //prints.c
 int			ft_print_error(int err_nb);
@@ -148,7 +141,7 @@ void		*ft_start_routine(void *arg);
 void		*ft_add_to_pq(t_coder *my_coder);
 void		ft_take_dongles(t_coder *my_coder);
 void		ft_release_dongles(t_coder *my_coder);
-int			ft_can_take(t_coder *m);
+int			ft_can_take_both(t_coder *m);
 
 //compiling.c
 void		ft_start_compile(t_coder *my_coder);

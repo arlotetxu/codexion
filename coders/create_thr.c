@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 12:18:34 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 19:06:02 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/21 11:47:31 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ int	ft_create_threads(t_gen *g)
 	{
 		if (pthread_create(th + i, NULL, ft_start_routine, g->c + i) != 0)
 			return (7);
-		pthread_mutex_lock(&g->m_launch);
-		g->launch++;
-		pthread_mutex_unlock(&g->m_launch);
 	}
+	pthread_mutex_lock(&g->m_launch);
+	g->launch = 1;
+	pthread_cond_broadcast(&g->w_align);
+	pthread_mutex_unlock(&g->m_launch);
 	i = -1;
 	while (++i < g->p->num_coders)
 		if (pthread_join(th[i], NULL) != 0)

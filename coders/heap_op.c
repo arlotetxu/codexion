@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 12:20:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 12:37:52 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:17:21 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_print_heaps(t_gen *g)
 		pthread_mutex_unlock(&g->m_print);
 		i++;
 	}
-	printf("Fin lista\n");
 }
 
 void	ft_pq_swap(t_coder *a, t_coder *b)
@@ -50,31 +49,20 @@ void	ft_pq_swap(t_coder *a, t_coder *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
-	pthread_mutex_lock(&a->gen->m_print);
-	printf("Swapping ID(A): %i /prior: %li - ID(B): %i/ prior: %li\n",
-		a->id, a->prior, b->id, b->prior);
-	pthread_mutex_unlock(&a->gen->m_print);
 }
 
 int	ft_pq_push(t_priority_q *pq, t_coder *m)
 {
 	int	pos;
 
-	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
-		return (pthread_mutex_unlock(&pq->m_pq), -1);
+		return (-1);
 	pos = pq->size;
 	if (pq->is_edf == 0)
-	{
 		pq->heap[pos] = *m;
-		pq->size++;
-		pthread_mutex_unlock(&pq->m_pq);
-		return (0);
-	}
 	else
 	{
 		pq->heap[pos] = *m;
-		pq->size++;
 		if (pos > 0)
 		{
 			// printf("\e[0;31mprior pos-1[%i]: %li / prior pos[%i]: %li\n\e[0m",
@@ -86,7 +74,7 @@ int	ft_pq_push(t_priority_q *pq, t_coder *m)
 				ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 		}
 	}
-	pthread_mutex_unlock(&pq->m_pq);
+	pq->size++;
 	return (0);
 }
 
@@ -95,12 +83,8 @@ void	ft_pq_pop(t_priority_q *pq, int coder_id)
 	int	i;
 	int	target;
 
-	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size == 0)
-	{
-		pthread_mutex_unlock(&pq->m_pq);
 		return ;
-	}
 	target = -1;
 	i = -1;
 	while (++i < pq->size)
@@ -115,19 +99,16 @@ void	ft_pq_pop(t_priority_q *pq, int coder_id)
 		}
 		pq->size--;
 	}
-	pthread_mutex_unlock(&pq->m_pq);
 }
 
 int	ft_pq_initial_push(t_priority_q *pq, t_coder *m)
 {
 	int	pos;
 
-	pthread_mutex_lock(&pq->m_pq);
 	if (pq->size >= pq->capacity)
-		return (pthread_mutex_unlock(&pq->m_pq), -1);
+		return (-1);
 	pos = pq->size;
 	pq->heap[pos] = *m;
 	pq->size++;
-	pthread_mutex_unlock(&pq->m_pq);
 	return (0);
 }

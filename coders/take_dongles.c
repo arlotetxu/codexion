@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 15:36:35 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 17:53:09 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:15:26 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,70 +33,75 @@ the dongle first.
 
 void	*ft_add_to_pq(t_coder *m)
 {
+	pthread_mutex_lock(&m->left->m_dongle);
 	ft_pq_push(m->left->pq, m);
+	pthread_mutex_unlock(&m->left->m_dongle);
 	if (m->right != NULL)
+	{
+		pthread_mutex_lock(&m->right->m_dongle);
 		ft_pq_push(m->right->pq, m);
+		pthread_mutex_unlock(&m->right->m_dongle);
+	}
 	return (NULL);
 }
 
-static void	ft_mutex(t_coder *m)
-{
-	if (m->id % 2 == 0)
-	{
-		pthread_mutex_lock(&m->left->m_status);
-		pthread_mutex_lock(&m->right->m_status);
-	}
-	else
-	{
-		pthread_mutex_lock(&m->right->m_status);
-		pthread_mutex_lock(&m->left->m_status);
-	}
-}
+// int	ft_can_take(t_coder *m)
+// {
+// 	// pthread_mutex_lock(&m->gen->m_gen);
+// 	ft_mutex(m);
+// 	if (m->left->pq->size > 0 && m->right->pq->size > 0
+// 		&& m->left->pq->heap[0].id == m->id
+// 		&& m->left->status == 0 && m->right->status == 0
+// 		&& ft_get_time_ms() >= m->left->end_cool
+// 		&& ft_get_time_ms() >= m->right->end_cool)
+// 		return (1);
+// 	if (m->id % 2 == 0)
+// 	{
+// 		pthread_mutex_unlock(&m->left->m_status);
+// 		pthread_mutex_unlock(&m->right->m_status);
+// 	}
+// 	else
+// 	{
+// 		pthread_mutex_unlock(&m->right->m_status);
+// 		pthread_mutex_unlock(&m->left->m_status);
+// 	}
+// 	// pthread_mutex_unlock(&m->gen->m_gen);
+// 	return (0);
+// }
 
-int	ft_can_take(t_coder *m)
+int	ft_can_take_both(t_coder *m)
 {
-	// pthread_mutex_lock(&m->gen->m_gen);
-	ft_mutex(m);
-	if (m->left->pq->size > 0 && m->right->pq->size > 0
-		&& m->left->pq->heap[0].id == m->id
-		&& m->left->status == 0 && m->right->status == 0
-		&& ft_get_time_ms() >= m->left->end_cool
-		&& ft_get_time_ms() >= m->right->end_cool)
-		return (1);
+	t_dongle	*first;
+	t_dongle	*second;
+
+	first = m->right;
+	second = m->left;
 	if (m->id % 2 == 0)
 	{
-		pthread_mutex_unlock(&m->left->m_status);
-		pthread_mutex_unlock(&m->right->m_status);
+		first = m->left;
+		second = m->right;
 	}
-	else
-	{
-		pthread_mutex_unlock(&m->right->m_status);
-		pthread_mutex_unlock(&m->left->m_status);
-	}
-	// pthread_mutex_unlock(&m->gen->m_gen);
+	if (second == NULL)
+		return (0);
+	pthread_mutex_lock(&first->m_dongle);
+	pthread_mutex_lock(&second->m_dongle);
+	if (first->pq->size > 0 && second->pq->size > 0
+		&& first->pq->heap[0].id == m->id
+		&& first->status == 0 && second->status == 0
+		&& ft_get_time_ms() >= first->end_cool
+		&& ft_get_time_ms() >= second->end_cool)
+		return (1);
+	pthread_mutex_unlock(&second->m_dongle);
+	pthread_mutex_unlock(&first->m_dongle);
 	return (0);
 }
 
 void	ft_take_dongles(t_coder *m)
 {
-	if (m->id % 2 == 0)
-	{
-		m->left->status = 1;
-		pthread_mutex_unlock(&m->left->m_status);
-		ft_print_take_dongle(m->id, m->gen);
-		m->right->status = 1;
-		pthread_mutex_unlock(&m->right->m_status);
-		ft_print_take_dongle(m->id, m->gen);
-	}
-	else
-	{
-		m->right->status = 1;
-		pthread_mutex_unlock(&m->right->m_status);
-		ft_print_take_dongle(m->id, m->gen);
-		m->left->status = 1;
-		pthread_mutex_unlock(&m->left->m_status);
-		ft_print_take_dongle(m->id, m->gen);
-	}
+	m->left->status = 1;
+	ft_print_take_dongle(m->id, m->gen);
+	m->right->status = 1;
+	ft_print_take_dongle(m->id, m->gen);
 }
 
 void	ft_release_dongles(t_coder *m)
@@ -104,14 +109,20 @@ void	ft_release_dongles(t_coder *m)
 	long	d_cool;
 
 	d_cool = m->gen->p->tt_cooldown;
-	pthread_mutex_lock(&m->left->m_status);
 	m->left->status = 0;
 	m->left->end_cool = ft_get_time_ms() + d_cool;
 	ft_pq_pop(m->left->pq, m->id);
-	pthread_mutex_unlock(&m->left->m_status);
-	pthread_mutex_lock(&m->right->m_status);
 	m->right->status = 0;
 	m->right->end_cool = ft_get_time_ms() + d_cool;
 	ft_pq_pop(m->right->pq, m->id);
-	pthread_mutex_unlock(&m->right->m_status);
+	if (m->id % 2 == 0)
+	{
+		pthread_mutex_unlock(&m->left->m_dongle);
+		pthread_mutex_unlock(&m->right->m_dongle);
+	}
+	else
+	{
+		pthread_mutex_unlock(&m->right->m_dongle);
+		pthread_mutex_unlock(&m->left->m_dongle);
+	}
 }
