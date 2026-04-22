@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 12:37:41 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/21 17:02:03 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/22 17:23:28 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	gen->p = p;
 	gen->c = c;
 	gen->d = d;
-	pthread_mutex_init(&gen->m_stop_sim, NULL);
+	// pthread_mutex_init(&gen->m_stop_sim, NULL);
 	pthread_mutex_init(&gen->m_print, NULL);
 	pthread_mutex_init(&gen->m_gen, NULL);
 	pthread_mutex_init(&gen->m_launch, NULL);
@@ -93,6 +93,7 @@ t_gen	*ft_init_gen(t_params *p, t_coder *c, t_dongle *d)
 	i = -1;
 	while (++i < p->num_coders)
 		c[i].gen = gen;
+	gen->pending_comp = gen->p->num_coders * gen->p->num_comp_req;
 	return (gen);
 }
 

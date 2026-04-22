@@ -25,6 +25,38 @@ void	ft_wait_coders(t_coder *m)
 	return ;
 }
 
+int	ft_exit_routine(t_coder *m)
+{
+	pthread_mutex_lock(&m->gen->m_gen);
+	if (m->gen->stop_sim)
+	{
+		pthread_mutex_unlock(&m->gen->m_gen);
+		return (1);
+	}
+	pthread_mutex_unlock(&m->gen->m_gen);
+	pthread_mutex_lock(&m->m_coder);
+	if (m->is_burned || m->num_comp <= 0)
+	{
+		pthread_mutex_unlock(&m->m_coder);
+		return (1);
+	}
+	pthread_mutex_unlock(&m->m_coder);
+	return (0);
+}
+
+void	ft_exit_program(t_coder *m)
+{
+	long	time;
+
+	time = (ft_get_time_ms() - m->gen->init_time);
+	pthread_mutex_lock(&m->gen->m_print);
+	printf("\e[0;31m%li %i burned out\n\e[0m", time, m->id);
+	pthread_mutex_unlock(&m->gen->m_print);
+	pthread_mutex_unlock(&m->gen->m_gen);
+	exit(1);
+	// return ;
+}
+
 void	*ft_start_routine(void *arg)
 {
 	t_coder	*m;
@@ -33,10 +65,8 @@ void	*ft_start_routine(void *arg)
 	ft_wait_coders(m);
 	while (1)
 	{
-		pthread_mutex_lock(&m->gen->m_gen);
-		if (m->is_burned || m->num_comp <= 0)
+		if (ft_exit_routine(m))
 			break ;
-		pthread_mutex_unlock(&m->gen->m_gen);
 		if (ft_can_take_both(m))
 		{
 			ft_take_dongles(m);
@@ -46,6 +76,9 @@ void	*ft_start_routine(void *arg)
 		}
 		usleep(10);
 	}
+	pthread_mutex_lock(&m->gen->m_gen);
+	if (m->gen->stop_sim == 1)
+		ft_exit_program(m);
 	pthread_mutex_unlock(&m->gen->m_gen);
 	return (NULL);
 }

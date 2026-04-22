@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:58:14 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 15:57:05 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/22 17:04:43 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ TO DO
 - [X] Actualizar los tiempos en la rutina de los coders
 - [X] Evaluar si las variables st_deb y st_ref en t_coder son necesarias
 - [] Crear hilo watcher con su rutina
+- [] Proteger mutex_init en init_data.c
+- [] Desarrollar escenario para 1 solo coder
 - [] Destruir hilos
 - [] Destruir mutex
 - [] README
@@ -63,9 +65,16 @@ int	ft_start_program(char **all_args, t_params *p_param)
 	if (!gen)
 		return (6); //!Liberar?
 	// Crear watcher
+	ret = ft_create_watcher(gen);
+	if (ret)
+		return (ft_free_gen_struct(gen), ret);
+	// Crear hilos
 	ret = ft_create_threads(gen);
 	if (ret)
 		return (ft_free_gen_struct(gen), ret);
+	ret = pthread_join(gen->watcher, NULL);
+	if (ret != 0)
+		return (ft_free_gen_struct(gen), 8);
 	ft_free_gen_struct(gen);
 	return (0);
 }

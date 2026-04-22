@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/21 17:16:20 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/22 17:23:21 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_dongle
 typedef struct s_coder
 {
 	int				id;
-	int				st_comp;
+	long			st_comp;
 	long			prior;
 	int				num_comp;
 	int				is_burned;
@@ -67,14 +67,15 @@ typedef struct s_gen
 	t_params		*p;
 	t_coder			*c;
 	t_dongle		*d;
+	pthread_t		watcher;
 	pthread_mutex_t	m_print;
-	pthread_mutex_t	m_stop_sim;
 	pthread_mutex_t	m_gen;
 	pthread_mutex_t	m_launch;
 	pthread_cond_t	w_align;
 	int				stop_sim;
 	long			init_time;
 	int				launch;
+	int				pending_comp;
 }	t_gen;
 
 //=============PROTOTYPES//=============
@@ -124,10 +125,10 @@ t_gen		*ft_init_gen(t_params *p, t_coder *c, t_dongle *d);
 t_gen		*ft_start_init_data(t_params *p);
 
 //heap_op.c
+void		*ft_add_to_pq(t_coder *my_coder);
 void		ft_pq_swap(t_coder *a, t_coder *b);
 int			ft_pq_push(t_priority_q *pq, t_coder *new_coder);
 void		ft_pq_pop(t_priority_q *pq, int coder_id);
-void		ft_print_heaps(t_gen *g);
 int			ft_pq_initial_push(t_priority_q *pq, t_coder *m);
 
 //create_th.c
@@ -135,15 +136,23 @@ int			ft_create_threads(t_gen *g);
 
 //routine.c
 void		ft_wait_coders(t_coder *m);
+int			ft_exit_routine(t_coder *m);
+void		ft_exit_program(t_coder *m);
 void		*ft_start_routine(void *arg);
 
 //take_dongles.c
-void		*ft_add_to_pq(t_coder *my_coder);
+void		ft_sorted_mutex_lock(t_coder *m);
+void		ft_sorted_mutex_unlock(t_coder *m);
 void		ft_take_dongles(t_coder *my_coder);
 void		ft_release_dongles(t_coder *my_coder);
 int			ft_can_take_both(t_coder *m);
 
 //compiling.c
 void		ft_start_compile(t_coder *my_coder);
+
+//watcher.c
+int			ft_create_watcher(t_gen *g);
+void		*ft_w_routine(void *arg);
+int			ft_check_burnout(t_gen *g);
 
 #endif

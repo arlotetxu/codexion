@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 12:20:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/21 17:17:21 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/22 12:32:20 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,46 @@
 #include <pthread.h>
 #include <stdio.h>
 
-void	ft_print_heaps(t_gen *g)
-{
-	int	i;
-	int	j;
+// void	ft_print_heaps(t_gen *g)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < g->p->num_coders)
+// 	i = 0;
+// 	while (i < g->p->num_coders)
+// 	{
+// 		pthread_mutex_lock(&g->m_print);
+// 		printf("\nDongle right de %i:\n", g->c[i].id);
+// 		j = 0;
+// 		while (g->c[i].right->pq->heap[j].id)
+// 		{
+// 			printf("[%i] Coder ID: %i\n", j, g->c[i].right->pq->heap[j].id);
+// 			j++;
+// 		}
+// 		printf("Dongle left de %i:\n", g->c[i].id);
+// 		j = 0;
+// 		while (g->c[i].left->pq->heap[j].id)
+// 		{
+// 			printf("[%i]Coder ID: %i\n", j, g->c[i].left->pq->heap[j].id);
+// 			j++;
+// 		}
+// 		pthread_mutex_unlock(&g->m_print);
+// 		i++;
+// 	}
+// }
+
+void	*ft_add_to_pq(t_coder *m)
+{
+	pthread_mutex_lock(&m->left->m_dongle);
+	ft_pq_push(m->left->pq, m);
+	pthread_mutex_unlock(&m->left->m_dongle);
+	if (m->right != NULL)
 	{
-		pthread_mutex_lock(&g->m_print);
-		printf("\nDongle right de %i:\n", g->c[i].id);
-		j = 0;
-		while (g->c[i].right->pq->heap[j].id)
-		{
-			printf("[%i] Coder ID: %i\n", j, g->c[i].right->pq->heap[j].id);
-			j++;
-		}
-		printf("Dongle left de %i:\n", g->c[i].id);
-		j = 0;
-		while (g->c[i].left->pq->heap[j].id)
-		{
-			printf("[%i]Coder ID: %i\n", j, g->c[i].left->pq->heap[j].id);
-			j++;
-		}
-		pthread_mutex_unlock(&g->m_print);
-		i++;
+		pthread_mutex_lock(&m->right->m_dongle);
+		ft_pq_push(m->right->pq, m);
+		pthread_mutex_unlock(&m->right->m_dongle);
 	}
+	return (NULL);
 }
 
 void	ft_pq_swap(t_coder *a, t_coder *b)
