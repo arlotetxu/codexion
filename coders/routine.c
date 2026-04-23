@@ -44,25 +44,14 @@ int	ft_exit_routine(t_coder *m)
 	return (0);
 }
 
-void	ft_exit_program(t_coder *m)
-{
-	long	time;
-
-	time = (ft_get_time_ms() - m->gen->init_time);
-	pthread_mutex_lock(&m->gen->m_print);
-	printf("\e[0;31m%li %i burned out\n\e[0m", time, m->id);
-	pthread_mutex_unlock(&m->gen->m_print);
-	pthread_mutex_unlock(&m->gen->m_gen);
-	exit(1);
-	// return ;
-}
-
 void	*ft_start_routine(void *arg)
 {
 	t_coder	*m;
 
 	m = (t_coder *)arg;
 	ft_wait_coders(m);
+	if (m->id % 2 != 0)
+		usleep(1000);
 	while (1)
 	{
 		if (ft_exit_routine(m))
@@ -74,11 +63,11 @@ void	*ft_start_routine(void *arg)
 			if (m->num_comp)
 				ft_add_to_pq(m);
 		}
-		usleep(10);
+		usleep(100);
 	}
-	pthread_mutex_lock(&m->gen->m_gen);
-	if (m->gen->stop_sim == 1)
-		ft_exit_program(m);
-	pthread_mutex_unlock(&m->gen->m_gen);
+	// pthread_mutex_lock(&m->gen->m_gen);
+	// if (m->gen->stop_sim == 1)
+	// 	ft_exit_program(m);
+	// pthread_mutex_unlock(&m->gen->m_gen);
 	return (NULL);
 }

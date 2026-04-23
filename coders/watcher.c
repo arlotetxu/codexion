@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:11:28 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/22 17:24:30 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/23 12:12:15 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+void	ft_exit_program(t_coder *m)
+{
+	long	time;
+
+	time = (ft_get_time_ms() - m->gen->init_time);
+	pthread_mutex_lock(&m->gen->m_print);
+	printf("\e[0;31m%li %i burned out\n\e[0m", time, m->id);
+	pthread_mutex_unlock(&m->gen->m_print);
+	// pthread_mutex_unlock(&m->gen->m_gen);
+	// ft_free_gen_struct(m->gen);
+	// exit(1);
+	// return ;
+}
 
 int	ft_check_burnout(t_gen *g)
 {
@@ -31,16 +45,12 @@ int	ft_check_burnout(t_gen *g)
 			pthread_mutex_lock(&g->m_gen);
 			g->stop_sim = 1;
 			pthread_mutex_unlock(&g->m_gen);
-			// g->c[i].is_burned = 1;
-
+			ft_exit_program(&g->c[i]);
 			return (1);
 		}
 		pthread_mutex_unlock(&g->c[i].m_coder);
-
-		// pthread_mutex_unlock(&g->m_gen);
-		usleep(10);
+		usleep(100);
 	}
-	// pthread_mutex_unlock(&g->m_gen);
 	return (0);
 }
 

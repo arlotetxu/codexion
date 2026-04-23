@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:07:40 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/20 19:09:30 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/23 12:04:25 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	ft_print_take_dongle(int id, t_gen *g)
 {
 	long			time;
 
+	pthread_mutex_lock(&g->m_gen);
+	if (g->stop_sim)
+	{
+		pthread_mutex_unlock(&g->m_gen);
+		return ;
+	}
+	pthread_mutex_unlock(&g->m_gen);
 	time = (ft_get_time_ms() - g->init_time);
 	pthread_mutex_lock(&g->m_print);
 	printf("%li %i has taken a dongle\n", time, id);
@@ -49,6 +56,13 @@ void	ft_print_compiling(t_coder *m)
 	long			sleep;
 	long			init_time;
 
+	pthread_mutex_lock(&m->gen->m_gen);
+	if (m->gen->stop_sim)
+	{
+		pthread_mutex_unlock(&m->gen->m_gen);
+		return ;
+	}
+	pthread_mutex_unlock(&m->gen->m_gen);
 	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
 	sleep = ft_get_time_ms() + m->gen->p->tt_comp;
@@ -66,6 +80,13 @@ void	ft_print_debugging(t_coder *m)
 	long			sleep;
 	long			init_time;
 
+	pthread_mutex_lock(&m->gen->m_gen);
+	if (m->gen->stop_sim)
+	{
+		pthread_mutex_unlock(&m->gen->m_gen);
+		return ;
+	}
+	pthread_mutex_unlock(&m->gen->m_gen);
 	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
 	sleep = ft_get_time_ms() + m->gen->p->tt_deb;
@@ -83,6 +104,13 @@ void	ft_print_refactoring(t_coder *m)
 	long			sleep;
 	long			init_time;
 
+	pthread_mutex_lock(&m->gen->m_gen);
+	if (m->gen->stop_sim)
+	{
+		pthread_mutex_unlock(&m->gen->m_gen);
+		return ;
+	}
+	pthread_mutex_unlock(&m->gen->m_gen);
 	init_time = m->gen->init_time;
 	time = (ft_get_time_ms() - init_time);
 	sleep = ft_get_time_ms() + m->gen->p->tt_ref;

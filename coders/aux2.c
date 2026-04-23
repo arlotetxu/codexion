@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 12:08:30 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/08 10:25:19 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/23 11:29:38 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_free_gen_struct(t_gen *gen)
 	}
 	free(gen->d);
 	free(gen->c);
+	free(gen->p);
 	free(gen);
 }
 

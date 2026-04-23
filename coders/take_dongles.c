@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 15:36:35 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/22 12:49:21 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/23 12:22:14 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,13 @@ void	ft_release_dongles(t_coder *m)
 	d_cool = m->gen->p->tt_cooldown;
 	m->left->status = 0;
 	m->left->end_cool = ft_get_time_ms() + d_cool;
+	// pthread_mutex_lock(&m->left->m_dongle);
 	ft_pq_pop(m->left->pq, m->id);
+	// pthread_mutex_unlock(&m->left->m_dongle);
 	m->right->status = 0;
 	m->right->end_cool = ft_get_time_ms() + d_cool;
+	// pthread_mutex_lock(&m->right->m_dongle);
 	ft_pq_pop(m->right->pq, m->id);
+	// pthread_mutex_unlock(&m->right->m_dongle);
 	ft_sorted_mutex_unlock(m);
 }
