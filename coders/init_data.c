@@ -33,7 +33,7 @@ t_dongle	*ft_init_dongles(t_params *p)
 		d[i].end_cool = 0;
 		d[i].status = 0;
 		d[i].pq = malloc(sizeof(t_priority_q)); //!malloc sin liberar
-		d[i].pq->heap = malloc(sizeof(t_coder) * 2); //!malloc sin liberar
+		d[i].pq->heap = malloc(sizeof(t_coder *) * 2); //!malloc sin liberar
 		if (!d[i].pq || !d[i].pq->heap)
 			return (NULL); //!Liberar
 		d[i].pq->size = 0;

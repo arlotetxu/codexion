@@ -34,7 +34,7 @@ typedef struct s_params
 
 typedef struct s_priority_q
 {
-	t_coder			*heap;
+	t_coder			**heap;
 	int				size;
 	int				capacity;
 	int				is_edf;
@@ -126,7 +126,8 @@ t_gen		*ft_start_init_data(t_params *p);
 
 //heap_op.c
 void		*ft_add_to_pq(t_coder *my_coder);
-void		ft_pq_swap(t_coder *a, t_coder *b);
+// void		ft_pq_swap(t_coder *a, t_coder *b);
+void		ft_pq_swap(t_coder **a, t_coder **b);
 int			ft_pq_push(t_priority_q *pq, t_coder *new_coder);
 void		ft_pq_pop(t_priority_q *pq, int coder_id);
 int			ft_pq_initial_push(t_priority_q *pq, t_coder *m);

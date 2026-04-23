@@ -75,7 +75,7 @@ int	ft_can_take_both(t_coder *m)
 	if (second == NULL)
 		return (0);
 	if (first->pq->size > 0 && second->pq->size > 0
-		&& first->pq->heap[0].id == m->id
+		&& first->pq->heap[0]->id == m->id
 		&& first->status == 0 && second->status == 0
 		&& ft_get_time_ms() >= first->end_cool
 		&& ft_get_time_ms() >= second->end_cool)

@@ -56,9 +56,9 @@ void	*ft_add_to_pq(t_coder *m)
 	return (NULL);
 }
 
-void	ft_pq_swap(t_coder *a, t_coder *b)
+void	ft_pq_swap(t_coder **a, t_coder **b)
 {
-	t_coder	temp;
+	t_coder	*temp;
 
 	temp = *a;
 	*a = *b;
@@ -73,18 +73,18 @@ int	ft_pq_push(t_priority_q *pq, t_coder *m)
 		return (-1);
 	pos = pq->size;
 	if (pq->is_edf == 0)
-		pq->heap[pos] = *m;
+		pq->heap[pos] = m;
 	else
 	{
-		pq->heap[pos] = *m;
+		pq->heap[pos] = m;
 		if (pos > 0)
 		{
 			// printf("\e[0;31mprior pos-1[%i]: %li / prior pos[%i]: %li\n\e[0m",
 			// 	pq->heap[pos - 1].id, pq->heap[pos - 1].prior, pq->heap[pos].id,
 			// 	pq->heap[pos].prior);
-			if (pq->heap[pos - 1].prior > pq->heap[pos].prior
-				|| (pq->heap[pos - 1].prior == pq->heap[pos].prior
-					&& pq->heap[pos - 1].id < pq->heap[pos].id))
+			if (pq->heap[pos - 1]->prior > pq->heap[pos]->prior
+				|| (pq->heap[pos - 1]->prior == pq->heap[pos]->prior
+					&& pq->heap[pos - 1]->id < pq->heap[pos]->id))
 				ft_pq_swap(&pq->heap[pos - 1], &pq->heap[pos]);
 		}
 	}
@@ -102,7 +102,7 @@ void	ft_pq_pop(t_priority_q *pq, int coder_id)
 	target = -1;
 	i = -1;
 	while (++i < pq->size)
-		if (pq->heap[i].id == coder_id)
+		if (pq->heap[i]->id == coder_id)
 			target = i;
 	if (target != -1)
 	{
@@ -122,7 +122,7 @@ int	ft_pq_initial_push(t_priority_q *pq, t_coder *m)
 	if (pq->size >= pq->capacity)
 		return (-1);
 	pos = pq->size;
-	pq->heap[pos] = *m;
+	pq->heap[pos] = m;
 	pq->size++;
 	return (0);
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -74,10 +75,17 @@ void	ft_free_gen_struct(t_gen *gen)
 	i = 0;
 	while (i < gen->p->num_coders)
 	{
+		pthread_mutex_destroy(&gen->d[i].m_dongle);
+		pthread_cond_destroy(&gen->d[i].w_coold);
+		pthread_mutex_destroy(&gen->c[i].m_coder);
 		free(gen->d[i].pq->heap);
 		free(gen->d[i].pq);
 		i++;
 	}
+	pthread_mutex_destroy(&gen->m_gen);
+	pthread_mutex_destroy(&gen->m_launch);
+	pthread_mutex_destroy(&gen->m_print);
+	pthread_cond_destroy(&gen->w_align);
 	free(gen->d);
 	free(gen->c);
 	free(gen->p);

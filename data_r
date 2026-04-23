@@ -1,43 +1,85 @@
-¡Hola! Claro, analicemos la salida de helgrind. Es una herramienta fantástica para encontrar este tipo de problemas. El informe que te muestra, aunque un poco denso, apunta a un problema muy concreto y a un error de diseño fundamental en cómo manejas las estructuras y los mutex.
+¡Hola! Claro, analicemos la salida de helgrind. Es una herramienta fantástica
+para encontrar este tipo de problemas. El informe que te muestra, aunque un
+poco denso, apunta a un problema muy concreto y a un error de diseño fundamental
+en cómo manejas las estructuras y los mutex.
 
-Como pediste, no modificaré tu código, solo te explicaré dónde están los problemas.
+Como pediste, no modificaré tu código, solo te explicaré dónde están los
+problemas.
 
 El Data Race Principal que helgrind Detectó
-Helgrind ha encontrado una "carrera de datos" (data race). Esto ocurre cuando dos o más hilos acceden a la misma ubicación de memoria al mismo tiempo, al menos uno de los accesos es una escritura, y los hilos no están usando un mutex (u otro mecanismo de sincronización) para proteger ese acceso.
+Helgrind ha encontrado una "carrera de datos" (data race). Esto ocurre cuando
+dos o más hilos acceden a la misma ubicación de memoria al mismo tiempo, al
+menos uno de los accesos es una escritura, y los hilos no están usando un mutex
+(u otro mecanismo de sincronización) para proteger ese acceso.
 
-En tu caso, la carrera ocurre entre el hilo principal (Thread #1) y el hilo watcher (Thread #2) durante el arranque del programa.
+En tu caso, la carrera ocurre entre el hilo principal (Thread #1) y el hilo
+watcher (Thread #2) durante el arranque del programa.
 
 Vamos a desglosarlo:
 
+
 El "Lector" (Hilo Principal):
 
-¿Dónde?: En la función ft_add_initial_heap (fichero create_thr.c), que es llamada por ft_create_threads.
-¿Qué hace?: Esta función llama a ft_pq_initial_push. Dentro de ft_pq_initial_push (en heap_op.c), tienes esta línea:
+¿Dónde?: En la función ft_add_initial_heap (fichero create_thr.c), que es
+llamada por ft_create_threads.
+
+¿Qué hace?: Esta función llama a ft_pq_initial_push. Dentro de
+ft_pq_initial_push (en heap_op.c), tienes esta línea:
 c
 pq->heap[pos] = *m;
-Aquí, *m es una estructura t_coder. Esta línea realiza una copia completa, byte por byte, de la estructura t_coder original (que está en el array g->c) a la memoria del heap de la cola de prioridad.
-El problema: Esta operación lee toda la estructura t_coder, incluyendo el miembro pthread_mutex_t m_coder que contiene. Esta lectura se hace sin proteger con ningún mutex.
+Aquí, *m es una estructura t_coder. Esta línea realiza una copia completa,
+byte por byte, de la estructura t_coder original (que está en el array g->c) a
+la memoria del heap de la cola de prioridad.
+
+El problema: Esta operación lee toda la estructura t_coder, incluyendo el
+miembro pthread_mutex_t m_coder que contiene. Esta lectura se hace sin proteger
+con ningún mutex.
+
+
 El "Escritor" (Hilo watcher):
 
 ¿Dónde?: En la función ft_check_burnout (fichero watcher.c).
-¿Qué hace?: El hilo watcher se crea antes de que el hilo principal llame a ft_create_threads. Por lo tanto, el watcher ya está ejecutando su bucle en ft_check_burnout al mismo tiempo que el hilo principal está en ft_add_initial_heap. Dentro de su bucle, el watcher llama a pthread_mutex_lock y pthread_mutex_unlock sobre el mutex g->c[i].m_coder.
-El problema: Una llamada a pthread_mutex_unlock no es una operación de solo lectura. Para cambiar el estado del mutex de "bloqueado" a "desbloqueado", la función escribe en la memoria interna de la variable pthread_mutex_t. Helgrind detecta esta escritura.
+
+¿Qué hace?: El hilo watcher se crea antes de que el hilo principal llame a
+ft_create_threads. Por lo tanto, el watcher ya está ejecutando su bucle en
+ft_check_burnout al mismo tiempo que el hilo principal está en
+ft_add_initial_heap. Dentro de su bucle, el watcher llama a pthread_mutex_lock
+y pthread_mutex_unlock sobre el mutex g->c[i].m_coder.
+
+El problema: Una llamada a pthread_mutex_unlock no es una operación de solo
+lectura. Para cambiar el estado del mutex de "bloqueado" a "desbloqueado", la
+función escribe en la memoria interna de la variable pthread_mutex_t. Helgrind
+detecta esta escritura.
+
 El Conflicto:
-
-El hilo principal está leyendo los bytes de la estructura t_coder (incluyendo los bytes del mutex m_coder) al mismo tiempo que el hilo watcher está escribiendo en esos mismos bytes del mutex a través de pthread_mutex_unlock.
-
-Una lectura no sincronizada concurrente con una escritura en la misma memoria es la definición exacta de una "data race".
+El hilo principal está leyendo los bytes de la estructura t_coder (incluyendo
+los bytes del mutex m_coder) al mismo tiempo que el hilo watcher está
+escribiendo en esos mismos bytes del mutex a través de pthread_mutex_unlock.
+Una lectura no sincronizada concurrente con una escritura en la misma memoria
+es la definición exacta de una "data race".
 
 El Problema de Diseño Fundamental
-La "data race" que helgrind encontró es un síntoma de un problema de diseño más profundo en tu código: estás copiando estructuras que contienen mutex.
+La "data race" que helgrind encontró es un síntoma de un problema de diseño más
+profundo en tu código: estás copiando estructuras que contienen mutex.
 
-Una regla de oro en la programación con hilos es: nunca copies una estructura que contenga un mutex inicializado. Un pthread_mutex_t tiene un estado interno complejo. Copiarlo byte a byte (struct a = struct b) corrompe ese estado y conduce a un comportamiento indefinido, incluyendo "data races", deadlocks o crashes.
+Una regla de oro en la programación con hilos es: nunca copies una estructura
+que contenga un mutex inicializado. Un pthread_mutex_t tiene un estado interno
+complejo. Copiarlo byte a byte (struct a = struct b) corrompe ese estado y
+conduce a un comportamiento indefinido, incluyendo "data races", deadlocks o
+crashes.
 
 Este problema se manifiesta en varias partes de tu código:
 
 ft_pq_initial_push() en heap_op.c
 ft_pq_push() en heap_op.c
 ft_pq_swap() en heap_op.c
-Todas estas funciones copian la estructura t_coder por valor. La solución canónica a este problema es modificar la cola de prioridad para que almacene punteros a las estructuras t_coder (t_coder **heap) en lugar de las estructuras mismas. De esa manera, solo copias punteros (que es seguro y barato) en lugar de las estructuras completas.
+Todas estas funciones copian la estructura t_coder por valor. La solución
+canónica a este problema es modificar la cola de prioridad para que almacene
+punteros a las estructuras t_coder (t_coder **heap) en lugar de las estructuras
+mismas. De esa manera, solo copias punteros (que es seguro y barato) en lugar
+de las estructuras completas.
 
-En resumen: helgrind tiene toda la razón. Tienes una "data race" porque el hilo principal lee la memoria de un mutex sin protección mientras el hilo watcher escribe en ella. Esto se debe a que estás copiando estructuras que no deberían ser copiadas.
+En resumen: helgrind tiene toda la razón. Tienes una "data race" porque el hilo
+principal lee la memoria de un mutex sin protección mientras el hilo watcher
+escribe en ella. Esto se debe a que estás copiando estructuras que no deberían
+ser copiadas.
