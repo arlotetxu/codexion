@@ -6,7 +6,7 @@
 #    By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 11:11:03 by joflorid          #+#    #+#              #
-#    Updated: 2026/04/20 10:41:42 by joflorid         ###   ########.fr        #
+#    Updated: 2026/04/24 12:37:24 by joflorid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,22 +45,19 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 
 #=======================FILES======================
-#NAME = $(SRC_DIR)/push_swap
 NAME = codexion
 
-SRC_DIR = ./coders
+SRC_DIR = ./src
 
-SRC = codexion.c parser.c parser2.c aux.c aux2.c prints.c init_data.c \
-heap_op.c create_thr.c routine.c take_dongles.c compiling.c
-
+SRC = aux2.c create_thr.c one_coder.c prints.c watcher.c aux.c heap_op.c \
+parser2.c routine.c compiling.c init_data.c parser.c take_dongles.c \
+codexion.c
 
 OBJ_DIR = ./obj
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
-#OBJS_BONUS = $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.o))
-
-H_FILES = ./codexion.h
+H_FILES = ./inc/codexion.h
 
 #=========================TARGETS========================
 all: $(NAME)
@@ -88,4 +85,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all libft_make clean libft_clean fclean libft_fclean re bonus
+.PHONY: all clean fclean re

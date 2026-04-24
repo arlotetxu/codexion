@@ -6,13 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 11:16:09 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/06 10:18:40 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:40:00 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <limits.h>
 
 int	ft_strlen(char *str)
@@ -82,24 +80,6 @@ int	ft_not_all_digits(char *str)
 	}
 	return (0);
 }
-
-// long	ft_atol(char *s)
-// {
-// 	int		i;
-// 	long	res;
-
-// 	if (!s)
-// 		return (0);
-// 	res = 0;
-// 	i = -1;
-// 	while (s[++i])
-// 	{
-// 		if (res > (LONG_MAX - (s[i] - '0')) / 10)
-// 			return (-1);
-// 		res = res * 10 + (s[i] - '0');
-// 	}
-// 	return (res);
-// }
 
 int	ft_atoi(char *s)
 {

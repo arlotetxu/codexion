@@ -6,16 +6,12 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 13:07:40 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/23 12:04:25 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:49:12 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <time.h>
+#include "../inc/codexion.h"
 #include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/time.h>
 
 int	ft_print_error(int err_nb)
 {
@@ -23,7 +19,7 @@ int	ft_print_error(int err_nb)
 		printf("[ERROR]-Wrong number of arguments.\n");
 	else if (err_nb == 2)
 		printf("[ERROR]-First 7 arguments must be numeric and positives "
-			"numbers (without signs).\n");
+			"numbers.\n");
 	else if (err_nb == 3)
 		printf("[ERROR]-Arguments must be within int limits.\n");
 	else if (err_nb == 4)

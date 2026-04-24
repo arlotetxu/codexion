@@ -6,13 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 12:08:30 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/23 11:29:38 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:39:53 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <pthread.h>
-#include <stdio.h>
+#include "../inc/codexion.h"
 #include <stdlib.h>
 #include <sys/time.h>
 
@@ -76,7 +74,6 @@ void	ft_free_gen_struct(t_gen *gen)
 	while (i < gen->p->num_coders)
 	{
 		pthread_mutex_destroy(&gen->d[i].m_dongle);
-		pthread_cond_destroy(&gen->d[i].w_coold);
 		pthread_mutex_destroy(&gen->c[i].m_coder);
 		free(gen->d[i].pq->heap);
 		free(gen->d[i].pq);

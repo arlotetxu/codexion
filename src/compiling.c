@@ -6,15 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 10:30:53 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/23 10:25:11 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:34:05 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <pthread.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <stdio.h>
+#include "../inc/codexion.h"
 
 void	ft_start_compile(t_coder *m)
 {

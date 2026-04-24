@@ -6,13 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 11:05:36 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/06 16:49:17 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:43:13 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <limits.h>
-#include <stdio.h>
+#include "../inc/codexion.h"
 #include <stdlib.h>
 
 int	ft_check_args_nums(char **args)

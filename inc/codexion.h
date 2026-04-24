@@ -6,7 +6,7 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 15:44:12 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/22 17:23:21 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:38:45 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_priority_q
 typedef struct s_dongle
 {
 	pthread_mutex_t		m_dongle;
-	pthread_cond_t		w_coold;
 	long				end_cool;
 	int					status;
 	t_priority_q		*pq;
@@ -55,7 +54,6 @@ typedef struct s_coder
 	long			st_comp;
 	long			prior;
 	int				num_comp;
-	int				is_burned;
 	t_dongle		*left;
 	t_dongle		*right;
 	pthread_mutex_t	m_coder;
@@ -126,7 +124,6 @@ t_gen		*ft_start_init_data(t_params *p);
 
 //heap_op.c
 void		*ft_add_to_pq(t_coder *my_coder);
-// void		ft_pq_swap(t_coder *a, t_coder *b);
 void		ft_pq_swap(t_coder **a, t_coder **b);
 int			ft_pq_push(t_priority_q *pq, t_coder *new_coder);
 void		ft_pq_pop(t_priority_q *pq, int coder_id);
@@ -155,5 +152,8 @@ void		ft_start_compile(t_coder *my_coder);
 int			ft_create_watcher(t_gen *g);
 void		*ft_w_routine(void *arg);
 int			ft_check_burnout(t_gen *g);
+
+//one_coder.c
+void		ft_one_coder(t_gen *g);
 
 #endif

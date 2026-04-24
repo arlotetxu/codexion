@@ -6,30 +6,11 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 15:36:35 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/23 12:22:14 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:44:59 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <pthread.h>
-#include <unistd.h>
-#include <stdlib.h>
-
-/*
-	How EDF Works for a Dongle
-Just like FIFO, a coder first tries to place itself in the first_in_queue or
-second_in_queue slot of the desired dongle.
-If the dongle is on cooldown, the coder waits.
-Once the dongle is available (not on cooldown), it doesn't automatically go to
-first_in_queue. Instead, the dongle compares the last_compile timestamps of the
-coders in first_in_queue and second_in_queue (if both are present).
-The coder with the earliest last_compile timestamp (meaning they compiled
-longest ago and are closest to burnout) is considered the "highest priority"
-and gets the dongle.
-If the coder currently trying to acquire the dongle is not the highest priority,
-it waits and polls again, allowing a higher-priority coder to potentially take
-the dongle first.
- */
+#include "../inc/codexion.h"
 
 void	ft_sorted_mutex_lock(t_coder *m)
 {
@@ -99,13 +80,9 @@ void	ft_release_dongles(t_coder *m)
 	d_cool = m->gen->p->tt_cooldown;
 	m->left->status = 0;
 	m->left->end_cool = ft_get_time_ms() + d_cool;
-	// pthread_mutex_lock(&m->left->m_dongle);
 	ft_pq_pop(m->left->pq, m->id);
-	// pthread_mutex_unlock(&m->left->m_dongle);
 	m->right->status = 0;
 	m->right->end_cool = ft_get_time_ms() + d_cool;
-	// pthread_mutex_lock(&m->right->m_dongle);
 	ft_pq_pop(m->right->pq, m->id);
-	// pthread_mutex_unlock(&m->right->m_dongle);
 	ft_sorted_mutex_unlock(m);
 }

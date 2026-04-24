@@ -6,14 +6,12 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 12:18:34 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/23 12:34:51 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:39:45 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <pthread.h>
+#include "../inc/codexion.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 void	ft_add_initial_heap(t_gen *g)
 {
@@ -23,7 +21,8 @@ void	ft_add_initial_heap(t_gen *g)
 	while (i < g->p->num_coders)
 	{
 		ft_pq_initial_push(g->c[i].left->pq, &g->c[i]);
-		ft_pq_initial_push(g->c[i].right->pq, &g->c[i]);
+		if (g->p->num_coders > 1)
+			ft_pq_initial_push(g->c[i].right->pq, &g->c[i]);
 		i++;
 	}
 	i = 1;
@@ -57,8 +56,6 @@ int	ft_create_threads(t_gen *g)
 	while (++i < g->p->num_coders)
 		if (pthread_join(th[i], NULL) != 0)
 			return (7);
-	//pthread_destroy
-	//pthread_mutex_destroy
 	free (th);
 	return (0);
 }

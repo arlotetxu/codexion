@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
@@ -6,15 +6,12 @@
 /*   By: joflorid <joflorid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 12:24:18 by joflorid          #+#    #+#             */
-/*   Updated: 2026/04/17 15:55:58 by joflorid         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:44:33 by joflorid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
-#include <stdio.h>
+#include "../inc/codexion.h"
 #include <unistd.h>
-#include <pthread.h>
-#include <stdlib.h>
 
 void	ft_wait_coders(t_coder *m)
 {
@@ -35,7 +32,7 @@ int	ft_exit_routine(t_coder *m)
 	}
 	pthread_mutex_unlock(&m->gen->m_gen);
 	pthread_mutex_lock(&m->m_coder);
-	if (m->is_burned || m->num_comp <= 0)
+	if (m->num_comp <= 0)
 	{
 		pthread_mutex_unlock(&m->m_coder);
 		return (1);
@@ -49,9 +46,14 @@ void	*ft_start_routine(void *arg)
 	t_coder	*m;
 
 	m = (t_coder *)arg;
+	if (m->gen->p->num_coders == 1)
+	{
+		ft_one_coder(m->gen);
+		return (NULL);
+	}
 	ft_wait_coders(m);
 	if (m->id % 2 != 0)
-		usleep(1000);
+		usleep(2000);
 	while (1)
 	{
 		if (ft_exit_routine(m))
@@ -65,9 +67,5 @@ void	*ft_start_routine(void *arg)
 		}
 		usleep(100);
 	}
-	// pthread_mutex_lock(&m->gen->m_gen);
-	// if (m->gen->stop_sim == 1)
-	// 	ft_exit_program(m);
-	// pthread_mutex_unlock(&m->gen->m_gen);
 	return (NULL);
 }
