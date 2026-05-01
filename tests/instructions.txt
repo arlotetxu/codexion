@@ -4,4 +4,6 @@ cd tests && bash tests.sh ../codexion 2>&1
 
 cd tests && bash tests_extreme.sh ../codexion 2>&1
 
-cd tests && bash test_helgrind.sh 2>&1
+cd tests && bash test_helgrind.sh ../codexion 2>&1
+
+cd tests && bash test_evaluation.sh ../codexion 2>&1
