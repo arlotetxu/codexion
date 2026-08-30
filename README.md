@@ -89,3 +89,6 @@ This is prevented by using the `coder->m_coder` mutex. The monitor must lock it 
 *   **Monitor to Coders**: The monitor communicates a simulation-ending event (like a burnout) by setting the `stop_sim` flag. This flag is protected by the `m_gen` mutex. Each coder thread checks this flag at the beginning of its main loop (`ft_exit_routine`), also while holding the `m_gen` mutex, and exits if it is set.
 
 *   **Coders to Monitor**: Coders signal that they have completed a compilation cycle by decrementing the `pending_comp` counter. This variable is also protected by the `m_gen` mutex to prevent race conditions from multiple coders updating it at once. The monitor thread checks this counter to determine when the simulation has completed successfully.
+
+### MARK
+<img src="https://github.com/arlotetxu/codexion/blob/main/codexion_mark.png" alt="Logo" height="175"/>
